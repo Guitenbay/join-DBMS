@@ -1,3 +1,4 @@
+import algorithm.JoinOperation;
 import algorithm.impl.TestJoinOperationImpl;
 import response.TestUserPhoneResponse;
 import table.Phone;
@@ -10,13 +11,13 @@ public class Application {
 
     public static void main(String[] args) {
         List[] lists = initData();
-        TestJoinOperationImpl joinImpl = new TestJoinOperationImpl();
+        JoinOperation joinImpl = new TestJoinOperationImpl();
         List responses = joinImpl.join(lists[0], lists[1], "id", "userId",
                 TestUserPhoneResponse.class, User.class, Phone.class);
         responses.forEach(System.out::println);
     }
 
-    public static List[] initData() {
+    private static List[] initData() {
         List<User> users = new ArrayList<>();
         List<Phone> phones = new ArrayList<>();
         users.add(new User("1", 20, "宁夏", "男", "1234567"));
