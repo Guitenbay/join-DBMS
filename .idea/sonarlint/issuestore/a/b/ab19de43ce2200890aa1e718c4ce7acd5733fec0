@@ -1,4 +1,7 @@
 
-U	java:S106"9Replace this use of System.out or System.err by a logger.(Ğ„¸ô8œ·ñç.
+M
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8ø”½Ğê.
 L
-java:S3740"/Provide the parametrized type for this generic.(È¯Ë8øÊóç.
+java:S3740"/Provide the parametrized type for this generic.(È¯Ë8øÊóç.
+]	java:S125"<This block of commented-out lines of code should be removed.(±‚Öÿÿÿÿÿ8ªÎ³Ğê.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(Ğ„¸ô8œ·ñç.
