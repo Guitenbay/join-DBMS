@@ -36,7 +36,7 @@ public class Table<T> {
         }
     }
 
-    public List<T> readDataLimit(int num) {
+    public List<T> readRowLimit(int num) {
         List<T> results = new ArrayList<>();
         try {
             String line = null;

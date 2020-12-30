@@ -5,7 +5,6 @@ import table.Phone;
 import table.Table;
 import table.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Application {
@@ -30,10 +29,10 @@ public class Application {
 //        phones.add(new Phone("1", "1769876540"));
         Table<User> userTable = new Table<>("user", User.class);
         userTable.startRead();
-        users = userTable.readDataLimit(3);
+        users = userTable.readRowLimit(3);
         Table<Phone> phoneTable = new Table<>("phone", Phone.class);
         phoneTable.startRead();
-        phones = phoneTable.readDataLimit(4);
+        phones = phoneTable.readRowLimit(4);
         return new List[]{users, phones};
     }
 
