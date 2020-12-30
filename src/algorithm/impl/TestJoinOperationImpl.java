@@ -72,7 +72,6 @@ public class TestJoinOperationImpl implements JoinOperation {
                         }
                     }
                     entities.add(entity);
-                    break;
                 }
             }
         }

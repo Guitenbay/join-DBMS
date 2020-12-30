@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class IndexNestedLoopJoin implements  JoinOperation{
+public class IndexNestedLoopJoinImpl implements  JoinOperation{
     /**
      * Index Nested Loop JOIN 函数
      * @param rightList 左表
@@ -56,13 +56,10 @@ public class IndexNestedLoopJoin implements  JoinOperation{
             final  Object leftValue = ClassUtils.getValueOfField(leftFieldMap.get(leftProperty), left);
             // 索引右值
             final  K right = b.find(leftValue.toString());
-//            System.out.println(right);
-            assert leftValue != null;
             if(right==null)
                 continue;
             final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
             assert rightValue!=null;
-
 
             // 判断 join 条件是否一致
             if (leftValue.toString().equals(rightValue.toString())) {
@@ -83,9 +80,7 @@ public class IndexNestedLoopJoin implements  JoinOperation{
                     }
                 }
                 entities.add(entity);
-
             }
-
         }
         return entities;
     }
