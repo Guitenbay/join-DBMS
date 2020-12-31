@@ -92,33 +92,6 @@ public class IndexNestedLoopJoin implements  JoinOperation{
                 }
             }else
                 continue;
-//            assert leftValue != null;
-//            final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
-//            assert rightValue!=null;
-//
-//
-//            // 判断 join 条件是否一致
-//            if (leftValue.toString().equals(rightValue.toString())) {
-//                T entity = ClassUtils.createEntityFor(responseClazz);
-//                // 设置 Join 后的对象的属性值
-//                for (Field responseField : responseClazz.getDeclaredFields()) {
-//                    final String responseFieldName = responseField.getName();
-//                    if (leftFieldMap.containsKey(responseFieldName)) {
-//                        ClassUtils.setValueOfFieldFor(
-//                                entity,
-//                                responseField,
-//                                Objects.requireNonNull(ClassUtils.getValueOfField(leftFieldMap.get(responseFieldName), left)));
-//                    } else {
-//                        ClassUtils.setValueOfFieldFor(
-//                                entity,
-//                                responseField,
-//                                Objects.requireNonNull(ClassUtils.getValueOfField(rightFieldMap.get(responseFieldName), right)));
-//                    }
-//                }
-//                entities.add(entity);
-//                System.out.println(entities);
-//
-//            }
 
         }
         return entities;
