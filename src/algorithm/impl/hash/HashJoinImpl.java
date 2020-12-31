@@ -1,4 +1,4 @@
-package algorithm.impl;
+package algorithm.impl.hash;
 
 import algorithm.JoinOperation;
 
@@ -65,7 +65,7 @@ public class HashJoinImpl implements JoinOperation {
     public <T> Map<Integer, HashNode> doHash(
             List<T> smallList,
             Map<String, Field> smallFieldMap,
-             String smallProperty) {
+            String smallProperty) {
         //对小表做hash处理
         HashMap<Integer, HashNode> tableHashMap = new HashMap<>();
         //遍历小表
