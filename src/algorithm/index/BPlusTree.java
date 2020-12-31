@@ -1,5 +1,9 @@
 package algorithm.index;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 实现B+树
  *
@@ -34,8 +38,8 @@ public class BPlusTree<T, V extends Comparable<V>>{
     }
 
     //查询
-    public T find(V key){
-        T t = this.root.find(key);
+    public T[] find(V key){
+        T[] t = this.root.find(key);
         if(t == null){
 //            System.out.println("不存在");
         }
@@ -86,7 +90,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
         }
 
         //查找
-        abstract T find(V key);
+        abstract T[] find(V key);
 
         //插入
         abstract Node<T, V> insert(T value, V key);
@@ -113,7 +117,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
          * @return
          */
         @Override
-        T find(V key) {
+       T[]  find(V key) {
             int i = 0;
 //            System.out.println("Node");
             while(i < this.number){
@@ -275,7 +279,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
          * @return
          */
         @Override
-        T find(V key) {
+        T[] find(V key) {
 //            System.out.println("LeafNode");
 //            System.out.println(this.number);
             if(this.number <=0)
@@ -291,8 +295,47 @@ public class BPlusTree<T, V extends Comparable<V>>{
             while(left < right){
 //                System.out.println("leaf");
                 V middleKey = (V) this.keys[middle];
-                if(key.compareTo(middleKey) == 0)
-                    return (T) this.values[middle];
+                if(key.compareTo(middleKey) == 0) {
+                    T[] value= (T[]) new Object[1000];
+                    value[0]=(T)this.values[middle];
+                    V k=middleKey;
+                    Integer i=0;
+                    Integer n=middle;
+                    LeafNode templ=this;
+                    LeafNode tempr=this;
+                    while(true){
+                        if (n==0){
+                            if (templ.left==null)
+                                break;
+                            else {
+                                templ = templ.left;
+                                n=templ.number;
+                            }
+                        }else{
+                            if (templ.keys[--n]==k){
+                                value[++i]=(T)templ.values[n];
+                            }else
+                                break;
+                        }
+                    }
+                    n=middle;
+                    while(true){
+                        if (n==tempr.number-1){
+                            if (tempr.right==null)
+                                break;
+                            else {
+                                tempr = tempr.right;
+                                n=-1;
+                            }
+                        }else{
+                            if (templ.keys[++n]==k){
+                                value[++i]=(T)templ.values[n];
+                            }else
+                                break;
+                        }
+                    }
+                    return (T[]) value;
+                }
                 else if(key.compareTo(middleKey) < 0) {
                     if(right==middle)
                         return  null;

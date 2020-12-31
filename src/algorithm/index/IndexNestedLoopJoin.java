@@ -55,36 +55,71 @@ public class IndexNestedLoopJoin implements  JoinOperation{
             // 获取左值
             final  Object leftValue = ClassUtils.getValueOfField(leftFieldMap.get(leftProperty), left);
             // 索引右值
-            final  K right = b.find(leftValue.toString());
-//            System.out.println(right);
-            assert leftValue != null;
-            if(right==null)
-                continue;
-            final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
-            assert rightValue!=null;
+            final  K[] value = b.find(leftValue.toString());
+            K right=null;
+            if (value!=null) {
+                for (int i=0;i<1000;i++){
+                    if (value[i]!=null)
+                        right=value[i];
+                    else
+                        break;
+                    assert leftValue != null;
+                    final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
+                    assert rightValue!=null;
 
 
-            // 判断 join 条件是否一致
-            if (leftValue.toString().equals(rightValue.toString())) {
-                T entity = ClassUtils.createEntityFor(responseClazz);
-                // 设置 Join 后的对象的属性值
-                for (Field responseField : responseClazz.getDeclaredFields()) {
-                    final String responseFieldName = responseField.getName();
-                    if (leftFieldMap.containsKey(responseFieldName)) {
-                        ClassUtils.setValueOfFieldFor(
-                                entity,
-                                responseField,
-                                Objects.requireNonNull(ClassUtils.getValueOfField(leftFieldMap.get(responseFieldName), left)));
-                    } else {
-                        ClassUtils.setValueOfFieldFor(
-                                entity,
-                                responseField,
-                                Objects.requireNonNull(ClassUtils.getValueOfField(rightFieldMap.get(responseFieldName), right)));
+                    // 判断 join 条件是否一致
+                    if (leftValue.toString().equals(rightValue.toString())) {
+                        T entity = ClassUtils.createEntityFor(responseClazz);
+                        // 设置 Join 后的对象的属性值
+                        for (Field responseField : responseClazz.getDeclaredFields()) {
+                            final String responseFieldName = responseField.getName();
+                            if (leftFieldMap.containsKey(responseFieldName)) {
+                                ClassUtils.setValueOfFieldFor(
+                                        entity,
+                                        responseField,
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(leftFieldMap.get(responseFieldName), left)));
+                            } else {
+                                ClassUtils.setValueOfFieldFor(
+                                        entity,
+                                        responseField,
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(rightFieldMap.get(responseFieldName), right)));
+                            }
+                        }
+                        entities.add(entity);
+                        System.out.println(entities);
+
                     }
                 }
-                entities.add(entity);
-
-            }
+            }else
+                continue;
+//            assert leftValue != null;
+//            final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
+//            assert rightValue!=null;
+//
+//
+//            // 判断 join 条件是否一致
+//            if (leftValue.toString().equals(rightValue.toString())) {
+//                T entity = ClassUtils.createEntityFor(responseClazz);
+//                // 设置 Join 后的对象的属性值
+//                for (Field responseField : responseClazz.getDeclaredFields()) {
+//                    final String responseFieldName = responseField.getName();
+//                    if (leftFieldMap.containsKey(responseFieldName)) {
+//                        ClassUtils.setValueOfFieldFor(
+//                                entity,
+//                                responseField,
+//                                Objects.requireNonNull(ClassUtils.getValueOfField(leftFieldMap.get(responseFieldName), left)));
+//                    } else {
+//                        ClassUtils.setValueOfFieldFor(
+//                                entity,
+//                                responseField,
+//                                Objects.requireNonNull(ClassUtils.getValueOfField(rightFieldMap.get(responseFieldName), right)));
+//                    }
+//                }
+//                entities.add(entity);
+//                System.out.println(entities);
+//
+//            }
 
         }
         return entities;
