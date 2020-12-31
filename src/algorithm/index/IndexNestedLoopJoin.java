@@ -87,7 +87,6 @@ public class IndexNestedLoopJoin implements  JoinOperation{
                             }
                         }
                         entities.add(entity);
-                        System.out.println(entities);
 
                     }
                 }
