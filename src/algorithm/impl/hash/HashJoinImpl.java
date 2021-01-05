@@ -31,15 +31,6 @@ public class HashJoinImpl implements JoinOperation {
             Class<T> responseClazz,
             Class<U> leftTableClazz,
             Class<K> rightTableClazz) {
-//        // 获取 FieldName 与 Field 的键值对
-//        Map<String, Field> leftFieldMap = ClassUtils.getFieldMapFor(leftTableClazz);
-//        Map<String, Field> rightFieldMap = ClassUtils.getFieldMapFor(rightTableClazz);
-//        // 是否存在 join 的条件
-//        if (!leftFieldMap.containsKey(leftProperty) || !rightFieldMap.containsKey(rightProperty)) {
-//            System.out.println("Join error: no such property");
-//            return null;
-//        }
-
         //获取FieldName 与 Field 的键值对
         Map<String, Field> leftFieldMap = ClassUtils.getFieldMapFor(leftTableClazz);
         Map<String, Field> rightFieldMap = ClassUtils.getFieldMapFor(rightTableClazz);
@@ -48,86 +39,118 @@ public class HashJoinImpl implements JoinOperation {
             System.out.println("Join error: no such property");
             return null;
         }
+        List<T> entities = null;
+        Map<Integer,HashNode> tableHashMap = null;
+        //判断左表右表的大小
+        //左表大小
+        int leftFieldNum = leftFieldMap.keySet().size();
+        int leftTableColNum = leftList.size();
+        int leftTableSize = leftFieldNum * leftTableColNum;
+        //右表大小
+        int rightFieldNum = rightFieldMap.keySet().size();
+        int rightTableColNum = rightList.size();
+        int rightTableSize = rightFieldNum * rightTableColNum;
+        //对小表进行hash处理，大表进行join匹配
+        if(leftTableSize>=rightTableSize){
+            tableHashMap = doHash(rightList,rightFieldMap,rightProperty);
+            entities = doJoin(leftList,leftFieldMap,leftProperty,tableHashMap,rightFieldMap,rightProperty,responseClazz);
+        }else{
+            tableHashMap = doHash(leftList,leftFieldMap,leftProperty);
+            entities = doJoin(rightList,rightFieldMap,rightProperty,tableHashMap,leftFieldMap,leftProperty,responseClazz);
+        }
+        return entities;
+    }
 
-
-        List<T> entities = new ArrayList<>();
-
-        //对右表做hash处理
-        HashMap<Integer, HashNode> rightTableHashMap = new HashMap<>();
-        //遍历右表
-        for(K right : rightList){
-            //获取右值
-            final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
-            //获取右值的hash值
-            int rightHashCode = rightValue.toString().hashCode();
+    //hash处理函数
+    public <T> Map<Integer, HashNode> doHash(
+            List<T> smallList,
+            Map<String, Field> smallFieldMap,
+            String smallProperty) {
+        //对小表做hash处理
+        HashMap<Integer, HashNode> tableHashMap = new HashMap<>();
+        //遍历小表
+        for (T smallData : smallList) {
+            //获取小值
+            final Object smallDataValue = ClassUtils.getValueOfField(smallFieldMap.get(smallProperty), smallData);
+            //获取小值的hash值
+            int smallDataHashCode = smallDataValue.toString().hashCode();
             //判断当前hash值是否存在，不存在则先插入一个头节点，便于join的优化操作
-            if(!rightTableHashMap.containsKey(rightHashCode)){
+            if (!tableHashMap.containsKey(smallDataHashCode)) {
                 //新建头节点并插入链表
                 HashNode headNode = new HashNode();
-                rightTableHashMap.put(rightHashCode,headNode);
+                tableHashMap.put(smallDataHashCode, headNode);
                 //新建当前数据节点，并插入链表
                 HashNode dataNode = new HashNode();
-                dataNode.setData(right);
+                dataNode.setData(smallData);
                 dataNode.setNext(null);
                 headNode.setNext(dataNode);
-            }else {
+            } else {
                 //获取头节点
-                HashNode headNode = rightTableHashMap.get(rightHashCode);
+                HashNode headNode = tableHashMap.get(smallDataHashCode);
                 //新建当前数据节点并插入，头插法，方便，不用记录当前链表的最后一个节点
                 HashNode dataNode = new HashNode();
-                dataNode.setData(right);
+                dataNode.setData(smallData);
                 dataNode.setNext(headNode.getNext());
                 headNode.setNext(dataNode);
             }
         }
+        return tableHashMap;
+    }
 
-        //join过程
-
-        //遍历左表
-        for (U left: leftList){
-            // 获取左值
-            final Object leftValue = ClassUtils.getValueOfField(leftFieldMap.get(leftProperty), left);
-            //获取左值的hash值
-            int leftHashCode = leftValue.toString().hashCode();
+    //join处理函数
+    public <T,U> List<T> doJoin(
+            List<U> bigList,
+            Map<String, Field> bigFieldMap,
+            String bigProperty,
+            Map<Integer,HashNode> tableHashMap,
+            Map<String, Field> smallFieldMap,
+            String smallProperty,
+            Class<T> responseClazz){
+        List<T> entities = new ArrayList<>();
+        //遍历大表
+        for (U bigData: bigList){
+            // 获取大值
+            final Object bigDataValue = ClassUtils.getValueOfField(bigFieldMap.get(bigProperty), bigData);
+            //获取大值的hash值
+            int bigDataHashCode = bigDataValue.toString().hashCode();
             //判断当前map里是否有对应的hashcode
-            if(rightTableHashMap.containsKey(leftHashCode)){
-                //根据左值的HashCode获取头节点
-                HashNode headNode = rightTableHashMap.get(leftHashCode);
+            if(tableHashMap.containsKey(bigDataHashCode)){
+                //根据大值的HashCode获取头节点
+                HashNode headNode = tableHashMap.get(bigDataHashCode);
                 //遍历链表
                 while(headNode.getNext()!=null){
                     HashNode dataNode = headNode.getNext();
-                    // 获取右值
-                    final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), dataNode.getData());
+                    // 获取小值
+                    final Object smallDataValue = ClassUtils.getValueOfField(smallFieldMap.get(smallProperty), dataNode.getData());
                     //判断 join 条件是否一致
-                    if (leftValue.toString().equals(rightValue.toString())) {
+                    if (bigDataValue.toString().equals(smallDataValue.toString())) {
                         T entity = ClassUtils.createEntityFor(responseClazz);
                         // 设置 Join 后的对象的属性值
                         for (Field responseField : responseClazz.getDeclaredFields()) {
                             final String responseFieldName = responseField.getName();
-                            if (leftFieldMap.containsKey(responseFieldName)) {
+                            if (bigFieldMap.containsKey(responseFieldName)) {
                                 ClassUtils.setValueOfFieldFor(
                                         entity,
                                         responseField,
-                                        Objects.requireNonNull(ClassUtils.getValueOfField(leftFieldMap.get(responseFieldName), left)));
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(bigFieldMap.get(responseFieldName), bigData)));
                             } else {
                                 ClassUtils.setValueOfFieldFor(
                                         entity,
                                         responseField,
-                                        Objects.requireNonNull(ClassUtils.getValueOfField(rightFieldMap.get(responseFieldName), dataNode.getData())));
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(smallFieldMap.get(responseFieldName), dataNode.getData())));
                             }
                         }
-                        //join条件相同的话，将当前节点从链表中删除，对冲突节点的的查询进一步优化
-                        headNode.setNext(dataNode.getNext());
                         entities.add(entity);
-                        //？？？？？
+                        headNode = dataNode;
                         //break;
                     }else {
-                        //join条件不相同的话，讲当前节点表示为头节点
+                        //join条件不相同的话，将当前节点表示为头节点
                         headNode = dataNode;
                     }
                 }
             }
         }
-            return entities;
+        return entities;
     }
+
 }
