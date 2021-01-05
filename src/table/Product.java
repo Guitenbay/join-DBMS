@@ -1,25 +1,25 @@
 package table;
 
 public class Product {
-    private String id;
+    private String productId;
     private int price;
-    private String name;
+    private String productName;
 
     public Product() {
     }
 
-    public Product(String id, int price, String name) {
-        this.id = id;
+    public Product(String productId, int price, String productName) {
+        this.productId = productId;
         this.price = price;
-        this.name = name;
+        this.productName = productName;
     }
 
-    public String getID() {
-        return id;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setID(String id) {
-        this.id = id;
+    public void setProductId(String id) {
+        this.productId = id;
     }
 
     public int getPrice() {
@@ -30,11 +30,11 @@ public class Product {
         this.price = price;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

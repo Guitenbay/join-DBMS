@@ -1,4 +1,4 @@
-id,age,province,gender,password
+userId,age,province,gender,password
 6334846741,59,澳,男,34Ca8i33Pg6Sq5Ht18d8Tt3
 696293581478,30,鲁,女,d576Pe09m4
 996168273281,41,贵,男,s522l0e686909Qa9

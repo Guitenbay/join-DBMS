@@ -2,6 +2,7 @@ import algorithm.JoinOperation;
 import algorithm.impl.TestJoinOperationImpl;
 import algorithm.impl.hash.HashJoinImpl;
 import algorithm.impl.index.IndexNestedLoopJoinImpl;
+import query.FirstQuery;
 import response.TestUserPhoneResponse;
 import table.Phone;
 import table.Table;
@@ -12,12 +13,13 @@ import java.util.List;
 public class Application {
 
     public static void main(String[] args) {
-        List[] lists = initData();
-//        JoinOperation joinImpl = new TestJoinOperationImpl();
+//        List[] lists = initData();
+        JoinOperation joinImpl = new TestJoinOperationImpl();
 //        JoinOperation joinImpl = new IndexNestedLoopJoinImpl();
-        JoinOperation joinImpl = new HashJoinImpl();
-        List responses = joinImpl.join(lists[0], lists[1], "id", "userId",
-                TestUserPhoneResponse.class, User.class, Phone.class);
+//        JoinOperation joinImpl = new HashJoinImpl();
+//        List responses = joinImpl.join(lists[0], lists[1], "id", "userId",
+//                TestUserPhoneResponse.class, User.class, Phone.class);
+        List responses = new FirstQuery(joinImpl).query();
         responses.forEach(System.out::println);
     }
 

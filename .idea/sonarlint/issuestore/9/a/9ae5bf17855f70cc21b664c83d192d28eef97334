@@ -1,58 +1,58 @@
 
-P	java:S125"<This block of commented-out lines of code should be removed.(Öáû:
-A
-java:S19054"+Remove this unnecessary cast to "LeafNode".(ù°™ì
-=
-java:S1068"(Remove this unused "left" private field.(Ëå™7
-W	java:S125ä"<This block of commented-out lines of code should be removed.(£àéÅùÿÿÿÿ
-R	java:S125õ"<This block of commented-out lines of code should be removed.(ò¬²Ô
-O
-java:S1197Î"8Move the array designator from the variable to the type.(áÓ³½
-F
-java:S3740†"/Provide the parametrized type for this generic.(î¼í×
-R	java:S125Ò"<This block of commented-out lines of code should be removed.(•äÖÇ
-S
-java:S1197N"8Move the array designator from the variable to the type.(Ó×ôšûÿÿÿÿ
-R	java:S125¿"<This block of commented-out lines of code should be removed.(ñÈ«Ù
-K
-java:S3740‡"/Provide the parametrized type for this generic.(¸¨„§ùÿÿÿÿ
-K
-java:S3740å"/Provide the parametrized type for this generic.(‰ĞŸ”üÿÿÿÿ
-O
-java:S1197À"8Move the array designator from the variable to the type.(áÓ³½
-V	java:S125"<This block of commented-out lines of code should be removed.(şë²»ıÿÿÿÿ
-P
-java:S4973®"9Use the "equals" method if value comparison was intended.(ú‡ÛË
-S	java:S106x"9Replace this use of System.out or System.err by a logger.(íäªıÿÿÿÿÿ
-W	java:S125–"<This block of commented-out lines of code should be removed.(´õ‘õøÿÿÿÿ
-R	java:S125¨"<This block of commented-out lines of code should be removed.(è³×´
-p
-java:S2293û"YReplace the type specification in this constructor call with the diamond operator ("<>").(«ÜÔ¸
-R	java:S125¯"<This block of commented-out lines of code should be removed.(ŠÏ¬´
-T
-java:S1197…"8Move the array designator from the variable to the type.(¡ŞÊşùÿÿÿÿ
-Q
-java:S1117Ÿ":Rename "right" which hides the field declared at line 263.(…”Ì¿
-u
-java:S2293İ"YReplace the type specification in this constructor call with the diamond operator ("<>").(’ùºŒùÿÿÿÿ
-V	java:S1256"<This block of commented-out lines of code should be removed.(ó»³ïùÿÿÿÿ
-W	java:S125œ"<This block of commented-out lines of code should be removed.(œ———úÿÿÿÿ
-Q	java:S125×"<This block of commented-out lines of code should be removed.(àõ
-V	java:S125v"<This block of commented-out lines of code should be removed.(ÄÄª±ÿÿÿÿÿ
-Q	java:S125("<This block of commented-out lines of code should be removed.(‹¿ÆŸ
-R	java:S125ğ"<This block of commented-out lines of code should be removed.(é”÷¿
-O
-java:S1197Á"8Move the array designator from the variable to the type.(¹éšÍ
-P
-java:S4973©"9Use the "equals" method if value comparison was intended.(§É¾
-R	java:S125—"<This block of commented-out lines of code should be removed.(‹²ıñ
-W	java:S125¤"<This block of commented-out lines of code should be removed.(«…âÕüÿÿÿÿ
-R	java:S125Ù"<This block of commented-out lines of code should be removed.(Ã„Ø¹
-R	java:S125"<This block of commented-out lines of code should be removed.(™‚Œ°
-o
-java:S2293 "YReplace the type specification in this constructor call with the diamond operator ("<>").(„ì×İ
-O
-java:S1197Ï"8Move the array designator from the variable to the type.(õöÚ
 R	java:S125‘"<This block of commented-out lines of code should be removed.(”İ’
 U
 java:S1117"9Rename "left" which hides the field declared at line 262.(ËÑ©ııÿÿÿÿ
+R	java:S125¨"<This block of commented-out lines of code should be removed.(è³×´
+S
+java:S1197N"8Move the array designator from the variable to the type.(Ó×ôšûÿÿÿÿ
+R	java:S125¯"<This block of commented-out lines of code should be removed.(ŠÏ¬´
+=
+java:S1068"(Remove this unused "left" private field.(Ëå™7
+Q	java:S125("<This block of commented-out lines of code should be removed.(‹¿ÆŸ
+O
+java:S1197À"8Move the array designator from the variable to the type.(áÓ³½
+R	java:S125õ"<This block of commented-out lines of code should be removed.(ò¬²Ô
+K
+java:S3740‡"/Provide the parametrized type for this generic.(¸¨„§ùÿÿÿÿ
+W	java:S125–"<This block of commented-out lines of code should be removed.(´õ‘õøÿÿÿÿ
+A
+java:S19054"+Remove this unnecessary cast to "LeafNode".(ù°™ì
+P
+java:S4973©"9Use the "equals" method if value comparison was intended.(§É¾
+o
+java:S2293 "YReplace the type specification in this constructor call with the diamond operator ("<>").(„ì×İ
+P	java:S125"<This block of commented-out lines of code should be removed.(Öáû:
+R	java:S125Ò"<This block of commented-out lines of code should be removed.(•äÖÇ
+V	java:S125v"<This block of commented-out lines of code should be removed.(ÄÄª±ÿÿÿÿÿ
+Q	java:S125×"<This block of commented-out lines of code should be removed.(àõ
+W	java:S125ä"<This block of commented-out lines of code should be removed.(£àéÅùÿÿÿÿ
+P
+java:S4973®"9Use the "equals" method if value comparison was intended.(ú‡ÛË
+K
+java:S3740å"/Provide the parametrized type for this generic.(‰ĞŸ”üÿÿÿÿ
+Q
+java:S1117Ÿ":Rename "right" which hides the field declared at line 263.(…”Ì¿
+O
+java:S1197Ï"8Move the array designator from the variable to the type.(õöÚ
+V	java:S125"<This block of commented-out lines of code should be removed.(şë²»ıÿÿÿÿ
+W	java:S125¤"<This block of commented-out lines of code should be removed.(«…âÕüÿÿÿÿ
+u
+java:S2293İ"YReplace the type specification in this constructor call with the diamond operator ("<>").(’ùºŒùÿÿÿÿ
+S	java:S106x"9Replace this use of System.out or System.err by a logger.(íäªıÿÿÿÿÿ
+W	java:S125œ"<This block of commented-out lines of code should be removed.(œ———úÿÿÿÿ
+R	java:S125ğ"<This block of commented-out lines of code should be removed.(é”÷¿
+R	java:S125—"<This block of commented-out lines of code should be removed.(‹²ıñ
+R	java:S125Ù"<This block of commented-out lines of code should be removed.(Ã„Ø¹
+V	java:S1256"<This block of commented-out lines of code should be removed.(ó»³ïùÿÿÿÿ
+O
+java:S1197Á"8Move the array designator from the variable to the type.(¹éšÍ
+R	java:S125"<This block of commented-out lines of code should be removed.(™‚Œ°
+O
+java:S1197Î"8Move the array designator from the variable to the type.(áÓ³½
+p
+java:S2293û"YReplace the type specification in this constructor call with the diamond operator ("<>").(«ÜÔ¸
+T
+java:S1197…"8Move the array designator from the variable to the type.(¡ŞÊşùÿÿÿÿ
+F
+java:S3740†"/Provide the parametrized type for this generic.(î¼í×
+R	java:S125¿"<This block of commented-out lines of code should be removed.(ñÈ«Ù

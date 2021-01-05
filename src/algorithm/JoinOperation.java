@@ -1,5 +1,10 @@
 package algorithm;
 
+import response.UserCartAndProductRelationResponse;
+import response.UserCartAndProductResponse;
+import response.UserCartResponse;
+import table.ProductInShoppingCart;
+
 import java.util.List;
 
 public interface JoinOperation {

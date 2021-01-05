@@ -1,23 +1,18 @@
 package table;
 
 public class ShoppingCart {
-    private String id;
+    private String cartId;
     private String userId;
 
     public ShoppingCart() {
     }
 
-    public ShoppingCart(String id, String userId) {
-        this.id = id;
-        this.userId = userId;
+    public String getCartId() {
+        return cartId;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setCartId(String cartId) {
+        this.cartId = cartId;
     }
 
     public String getUserId() {

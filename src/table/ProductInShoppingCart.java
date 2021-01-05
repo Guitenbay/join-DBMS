@@ -1,25 +1,25 @@
 package table;
 
 public class ProductInShoppingCart {
-    private String shoppingCartId;
+    private String cartId;
     private String productId;
     private int number;
 
     public ProductInShoppingCart() {
     }
 
-    public ProductInShoppingCart(String shoppingCartId, String productId, int number) {
-        this.shoppingCartId = shoppingCartId;
+    public ProductInShoppingCart(String cartId, String productId, int number) {
+        this.cartId = cartId;
         this.productId = productId;
         this.number = number;
     }
 
-    public String getShoppingCartId() {
-        return shoppingCartId;
+    public String getCartId() {
+        return cartId;
     }
 
-    public void setShoppingCartId(String shoppingCartId) {
-        this.shoppingCartId = shoppingCartId;
+    public void setCartId(String cartId) {
+        this.cartId = cartId;
     }
 
     public String getProductId() {

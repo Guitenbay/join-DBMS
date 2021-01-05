@@ -36,6 +36,44 @@ public class Table<T> {
         }
     }
 
+    public boolean endRead() {
+        try {
+            this.bufferedReader.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<T> readRow() {
+        List<T> results = new ArrayList<>();
+        try {
+            String line = null;
+            if (this.fieldValues.length == 0) {
+                // 读到末尾是 NULL
+                if (null != (line = this.bufferedReader.readLine())) {
+                    this.fieldValues = line.split(",");
+                }
+            }
+            // 读到末尾是 NULL
+            while (null != (line = this.bufferedReader.readLine())) {
+                T entity = ClassUtils.createEntityFor(this.tableClazz);
+                String[] values = line.split(",");
+                for (int i=0; i < this.fieldValues.length; i++) {
+                    if (fieldMap.containsKey(fieldValues[i])) {
+                        final Field field = fieldMap.get(fieldValues[i]);
+                        ClassUtils.setValueOfFieldFor(entity, field, ConvertUtils.convert(values[i], field.getType()));
+                    }
+                }
+                results.add(entity);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
     public List<T> readRowLimit(int num) {
         List<T> results = new ArrayList<>();
         try {
