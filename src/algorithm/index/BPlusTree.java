@@ -77,6 +77,8 @@ public class BPlusTree<T, V extends Comparable<V>>{
         //子节点
         protected Node<T, V>[] childs;
         //键（子节点）数量
+        protected   Node<T,V> left;
+        protected   Node<T,V> right;
         protected Integer number;
         //键
         protected Object keys[];
@@ -121,7 +123,6 @@ public class BPlusTree<T, V extends Comparable<V>>{
             int i = 0;
 //            System.out.println("Node");
             while(i < this.number){
-                System.out.println("*");
                 if(key.compareTo((V) this.keys[i]) <= 0)
                     break;
                 i++;
@@ -152,7 +153,10 @@ public class BPlusTree<T, V extends Comparable<V>>{
             }
 
 //            System.out.println("非叶子节点查找key: " + this.keys[i]);
-
+             if (i>0){
+                 this.childs[i-1].right=this.childs[i];
+                 this.childs[i].left=this.childs[i-1];
+             }
             return this.childs[i].insert(value, key);
         }
 
@@ -181,6 +185,8 @@ public class BPlusTree<T, V extends Comparable<V>>{
                 this.keys[1] = node2.keys[node2.number - 1];
                 this.childs[0] = node1;
                 this.childs[1] = node2;
+                node1.right=node2;
+                node2.left=node1;
                 this.number += 2;
                 return this;
             }
@@ -303,17 +309,30 @@ public class BPlusTree<T, V extends Comparable<V>>{
                     Integer n=middle;
                     LeafNode templ=this;
                     LeafNode tempr=this;
+//                    System.out.println("*");
+                    if (this.left==null)
+//                        System.out.println("this leafnode's left is null");
+                    if(this.right==null)
+//                        System.out.println("this leafnode's right is null");
+//                    System.out.println(k);
                     while(true){
                         if (n==0){
-                            if (templ.left==null)
+//                            System.out.println("n==0");
+                            if (templ.left==null) {
+//                                System.out.println("left is null");
                                 break;
+                            }
                             else {
                                 templ = templ.left;
                                 n=templ.number;
                             }
                         }else{
-                            if (templ.keys[--n]==k){
-                                value[++i]=(T)templ.values[n];
+                            n=n-1;
+//                            System.out.println(n);
+//                            System.out.println(templ.keys[n]);
+                            if (templ.keys[n].equals(k)){
+                                i=i+1;
+                                value[i]=(T)templ.values[n];
                             }else
                                 break;
                         }
@@ -321,15 +340,22 @@ public class BPlusTree<T, V extends Comparable<V>>{
                     n=middle;
                     while(true){
                         if (n==tempr.number-1){
-                            if (tempr.right==null)
+//                            System.out.println("n==tempr.number-1");
+                            if (tempr.right==null){
+//                                System.out.println("right is null");
                                 break;
+                            }
                             else {
                                 tempr = tempr.right;
                                 n=-1;
                             }
                         }else{
-                            if (templ.keys[++n]==k){
-                                value[++i]=(T)templ.values[n];
+                            n=n+1;
+//                            System.out.println(n);
+//                            System.out.println(tempr.keys[n]);
+                            if (tempr.keys[n].equals(k)){
+                                i=i+1;
+                                value[i]=(T)tempr.values[n];
                             }else
                                 break;
                         }
@@ -442,6 +468,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
             System.arraycopy(tempKeys, 0, this.keys, 0, middle);
             System.arraycopy(tempValues, 0, this.values, 0, middle);
 
+            tempNode.right=this.right;
             this.right = tempNode;
             tempNode.left = this;
 

@@ -44,7 +44,8 @@ public class IndexNestedLoopJoin implements  JoinOperation{
         List<T> entities = new ArrayList<>();
 
         //创建索引表
-        BPlusTree<K, String> b = new BPlusTree<>(4);
+        BPlusTree<K, String> b = new BPlusTree<>(100);
+        int x=0;
         for (K right:rightList) {
             Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
             b.insert(right,rightValue.toString());
@@ -59,8 +60,9 @@ public class IndexNestedLoopJoin implements  JoinOperation{
             K right=null;
             if (value!=null) {
                 for (int i=0;i<1000;i++){
-                    if (value[i]!=null)
-                        right=value[i];
+                    if (value[i]!=null) {
+                        right = value[i];
+                    }
                     else
                         break;
                     assert leftValue != null;
@@ -86,6 +88,7 @@ public class IndexNestedLoopJoin implements  JoinOperation{
                                         Objects.requireNonNull(ClassUtils.getValueOfField(rightFieldMap.get(responseFieldName), right)));
                             }
                         }
+//                        System.out.println(entity);
                         entities.add(entity);
 
                     }
