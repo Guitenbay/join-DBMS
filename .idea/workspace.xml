@@ -2,43 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6914b486-4f1a-4182-b716-a740c85da3ec" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/query/AbstractQuery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/query/FifthQuery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/query/FirstQuery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/query/ForthQuery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/query/SecondQuery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/query/ThirdQuery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/CartAndProductRelationResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/UserCartAndProductRelationResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/UserCartAndProductResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/UserCartResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/UserPhoneCartAndProductRelationResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/UserPhoneCartResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/UserPhoneResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/b/0b8c6f4c3d5daaa0635d1d9cd443342221367b85" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/b/0b8c6f4c3d5daaa0635d1d9cd443342221367b85" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/2/12f34adca55bfa7eb3772ba54dd7b80a17ad2b62" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/2/12f34adca55bfa7eb3772ba54dd7b80a17ad2b62" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/a/4a66949168a5112cbc56136dcaee025d90b29c0b" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/a/4a66949168a5112cbc56136dcaee025d90b29c0b" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/c/4c7e47c76ad3277a614eb7d742a3a9652c958c07" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/c/4c7e47c76ad3277a614eb7d742a3a9652c958c07" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/f/7fe8cd17e7ad1fb21561dca8e929a76907bd9279" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/f/7fe8cd17e7ad1fb21561dca8e929a76907bd9279" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/0/7064cd5f4f4be7e79e1f9e51e6d06da31120ac7a" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/0/7064cd5f4f4be7e79e1f9e51e6d06da31120ac7a" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/a/9ae5bf17855f70cc21b664c83d192d28eef97334" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/a/9ae5bf17855f70cc21b664c83d192d28eef97334" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/b/ab19de43ce2200890aa1e718c4ce7acd5733fec0" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/b/ab19de43ce2200890aa1e718c4ce7acd5733fec0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/d/ddf161e525c668a5201b60d09bce3f07f7927004" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbs/user.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dbs/user.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/Application.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/Application.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/algorithm/impl/index/IndexNestedLoopJoinImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/algorithm/impl/index/IndexNestedLoopJoinImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/table/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/table/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/table/ProductInShoppingCart.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/table/ProductInShoppingCart.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/table/ShoppingCart.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/table/ShoppingCart.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/table/Table.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/table/Table.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/table/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/table/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/query/FifthQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/query/FifthQuery.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/query/ForthQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/query/ForthQuery.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/query/SecondQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/query/SecondQuery.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Join-DBMS/query/ThirdQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Join-DBMS/query/ThirdQuery.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm/JoinOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/JoinOperation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/table/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/table/ProductInShoppingCart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/ProductInShoppingCart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/table/ShoppingCart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/ShoppingCart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/table/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/Table.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/table/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/query/FifthQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/query/FifthQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/query/FirstQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/query/FirstQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/query/ForthQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/query/ForthQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/query/SecondQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/query/SecondQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/query/ThirdQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/query/ThirdQuery.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -126,7 +109,8 @@
       <workItem from="1609405271494" duration="1969000" />
       <workItem from="1609592774756" duration="1280000" />
       <workItem from="1609849521291" duration="3346000" />
-      <workItem from="1609853792217" duration="3730000" />
+      <workItem from="1609853792217" duration="3821000" />
+      <workItem from="1609901156378" duration="3037000" />
     </task>
     <servers />
   </component>

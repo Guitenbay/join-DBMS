@@ -15,6 +15,10 @@ public class FirstQuery extends AbstractQuery {
         super(joinOperation);
     }
 
+    /**
+     * 查询年龄大于30的女性加入购物车的的价格超过1000的物品ID
+     * @return
+     */
     public List<UserCartAndProductResponse> query() {
         Table<User> userTable = new Table<>("user", User.class);
         Table<ShoppingCart> cartTable = new Table<>("cart", ShoppingCart.class);
