@@ -468,7 +468,11 @@ public class BPlusTree<T, V extends Comparable<V>>{
             System.arraycopy(tempKeys, 0, this.keys, 0, middle);
             System.arraycopy(tempValues, 0, this.values, 0, middle);
 
-            tempNode.right=this.right;
+            LeafNode tempRight=this.right;
+            tempNode.right=tempRight;
+            if (tempRight!=null) {
+                tempRight.left = tempNode;
+            }
             this.right = tempNode;
             tempNode.left = this;
 
