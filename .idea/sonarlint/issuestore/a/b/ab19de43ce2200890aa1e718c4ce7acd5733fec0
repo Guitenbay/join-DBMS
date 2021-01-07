@@ -1,10 +1,11 @@
 
-]	java:S125"<This block of commented-out lines of code should be removed.(±‚Öÿÿÿÿÿ8Ç½ş–í.
-U	java:S106"9Replace this use of System.out or System.err by a logger.(Ğ„¸ô8…Îõ–í.
-J
-java:S1144"-Remove this unused private "initData" method.(óÓƒ8Ğˆô–í.
-]	java:S125"<This block of commented-out lines of code should be removed.(±Üƒÿÿÿÿÿ8âñõ–í.
-X	java:S125"<This block of commented-out lines of code should be removed.(œúß“8Ğˆô–í.
-Q
-java:S3740"/Provide the parametrized type for this generic.(€ÇÕ úÿÿÿÿ8¹ó—í.
-]	java:S125"<This block of commented-out lines of code should be removed.(³áè½ùÿÿÿÿ8¹ó—í.
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(³ö¸ùÿÿÿÿ8¯ú¼­í.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(¢† ˜8ÅïÖ­í.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(¤ôù…8äœó­í.
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(¡¿º´ûÿÿÿÿ8Õ•»­í.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(‡’å»8…Îõ–í.
+Z	java:S106 "9Replace this use of System.out or System.err by a logger.(²ßğ¥üÿÿÿÿ8¬ˆ®í.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(â¿‚8äœó­í.
+Z	java:S106"9Replace this use of System.out or System.err by a logger.( şşáøÿÿÿÿ8¬ˆ®í.
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(¥¿´¶ùÿÿÿÿ8ÅïÖ­í.
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(›€åşÿÿÿÿ8…ç»­í.

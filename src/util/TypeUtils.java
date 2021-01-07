@@ -8,7 +8,7 @@ public class TypeUtils {
     private static Map<Class, Class> likelyClassMap;
 
     static {
-        likelyClassMap = new HashMap<>() {
+        likelyClassMap = new HashMap<Class, Class>() {
             {
                 put(byte.class, Byte.class);
                 put(short.class, Short.class);

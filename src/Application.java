@@ -1,54 +1,72 @@
 import algorithm.JoinOperation;
-import algorithm.impl.*;
-import query.*;
+
+import algorithm.impl.TestJoinOperationImpl;
+import algorithm.impl.bnl.BlockNestedLoopImpl;
+import query.FirstQuery;
+import query.SecondQuery;
+import query.ForthQuery;
+import query.ThirdQuery;
+import query.FifthQuery;
 import response.*;
 
 import java.util.List;
 
+import static java.lang.System.*;
+
 public class Application {
 
     public static void main(String[] args) {
+        JoinOperation bnlJoin = new BlockNestedLoopImpl();
+
         JoinOperation joinImpl = new TestJoinOperationImpl();
 //        JoinOperation joinImpl = new IndexNestedLoopJoinImpl();
 //        JoinOperation joinImpl = new HashJoinImpl();
-        List<UserCartAndProductResponse> firstResponse = new FirstQuery(joinImpl).query();
-        System.out.println("For First Query:");
-        firstResponse.forEach(System.out::println);
+        
+        final String BNL = "bnl";
+        final String DEFAULT = "default";
 
-        List<UserPhoneResponse> secondResponse = new SecondQuery(joinImpl).query();
-        System.out.println("For Second Query:");
-        secondResponse.forEach(System.out::println);
+        /* ----------------- all memory/bnl/normal join on Query 1 ----------------- */
+        List<UserCartAndProductResponse> responses = new FirstQuery(joinImpl).query();
+        responses.forEach(out::println);
+        List<UserCartAndProductResponse> responseQ1Bnl = new FirstQuery(bnlJoin).query(BNL);
+        responseQ1Bnl.forEach(out::println);
+        List<UserCartAndProductResponse> responseQ1Default = new FirstQuery(bnlJoin).query(DEFAULT);
+        responseQ1Default.forEach(out::println);
 
-        List<CartAndProductRelationResponse> thirdResponse = new ThirdQuery(joinImpl).query();
-        System.out.println("For Third Query:");
-        thirdResponse.forEach(System.out::println);
+        /* ----------------- all memory/bnl/normal join on Query 2 ----------------- */
+        List<UserPhoneResponse> responseQ2Test = new SecondQuery(joinImpl).query();
+        responseQ2Test.forEach(out::println);
+        List<UserPhoneResponse> responseQ2Bnl = new SecondQuery(bnlJoin).query(BNL);
+        responseQ2Bnl.forEach(out::println);
+        List<UserPhoneResponse> responseQ2Default = new SecondQuery(bnlJoin).query(DEFAULT);
+        responseQ2Default.forEach(out::println);
 
-        List<UserPhoneCartAndProductRelationResponse> forthResponse = new ForthQuery(joinImpl).query();
-        System.out.println("For Forth Query:");
-        forthResponse.forEach(System.out::println);
 
-        List<UserCartAndProductRelationResponse> fifthResponse = new FifthQuery(joinImpl).query();
-        System.out.println("For Fifth Query:");
-        fifthResponse.forEach(System.out::println);
+        /* ----------------- all memory/bnl/normal join on Query 3 ----------------- */
+        List<CartAndProductRelationResponse> responseQ3Test = new ThirdQuery(joinImpl).query();
+        responseQ3Test.forEach(out::println);
+        List<CartAndProductRelationResponse> responseQ3Bnl = new ThirdQuery(bnlJoin).query(BNL);
+        responseQ3Bnl.forEach(out::println);
+        List<CartAndProductRelationResponse> responseQ3Default = new ThirdQuery(bnlJoin).query(DEFAULT);
+        responseQ3Default.forEach(out::println);
+
+
+        /* ----------------- all memory/bnl/normal join on Query 4 ----------------- */
+        List<UserPhoneCartAndProductRelationResponse> responseQ4Test = new ForthQuery(joinImpl).query();
+        responseQ4Test.forEach(out::println);
+        List<UserPhoneCartAndProductRelationResponse> responseQ4Bnl = new ForthQuery(bnlJoin).query(BNL);
+        responseQ4Bnl.forEach(out::println);
+        List<UserPhoneCartAndProductRelationResponse> responseQ4Default = new ForthQuery(bnlJoin).query(DEFAULT);
+        responseQ4Default.forEach(out::println);
+
+
+        /* ----------------- all memory/bnl/normal join on Query 5 ----------------- */
+        List<UserCartAndProductRelationResponse> responseQ5Test = new FifthQuery(joinImpl).query();
+        responseQ5Test.forEach(out::println);
+        List<UserCartAndProductRelationResponse> responseQ5Bnl = new FifthQuery(bnlJoin).query(BNL);
+        responseQ5Bnl.forEach(out::println);
+        List<UserCartAndProductRelationResponse> responseQ5Default = new FifthQuery(bnlJoin).query(DEFAULT);
+        responseQ5Default.forEach(out::println);
     }
-
-//    private static List[] initData() {
-//        List<User> users;
-//        List<Phone> phones;
-//        users.add(new User("1", 20, "宁夏", "男", "1234567"));
-//        users.add(new User("2", 50, "宁夏", "女", "123456743"));
-//        users.add(new User("3", 23, "北京", "男", "12345"));
-//        phones.add(new Phone("1", "1761234567"));
-//        phones.add(new Phone("1", "1761234568"));
-//        phones.add(new Phone("2", "1761234987"));
-//        phones.add(new Phone("1", "1769876540"));
-//        Table<User> userTable = new Table<>("user", User.class);
-//        userTable.startRead();
-//        users = userTable.readRowLimit(3);
-//        Table<Phone> phoneTable = new Table<>("phone", Phone.class);
-//        phoneTable.startRead();
-//        phones = phoneTable.readRowLimit(4);
-//        return new List[]{users, phones};
-//    }
 
 }
