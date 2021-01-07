@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class FifthQuery extends AbstractQuery {
+public class FifthQuery extends AbstractQuery implements Queryable {
     public FifthQuery(JoinOperation joinOperation) {
         super(joinOperation);
     }
@@ -19,6 +19,7 @@ public class FifthQuery extends AbstractQuery {
      * 查询浙江省购买物品ID1234的用户ID
      * @return
      */
+    @Override
     public List<UserCartAndProductRelationResponse> query() {
         Table<User> userTable = new Table<>("user", User.class);
         Table<ShoppingCart> cartTable = new Table<>("cart", ShoppingCart.class);
@@ -52,6 +53,7 @@ public class FifthQuery extends AbstractQuery {
 
         return result;
     }
+    @Override
     public List<UserCartAndProductRelationResponse> query(String method){
         if (method.contains("bnl")){
             Properties prop = new Properties();

@@ -10,8 +10,4 @@ public abstract class AbstractQuery {
     AbstractQuery(JoinOperation joinOperation) {
         this.joinOperation = joinOperation;
     }
-
-    public List<?> query() {
-        return null;
-    }
 }

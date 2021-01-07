@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class ForthQuery extends AbstractQuery {
+public class ForthQuery extends AbstractQuery implements Queryable {
     public ForthQuery(JoinOperation joinOperation) {
         super(joinOperation);
     }
@@ -20,6 +20,7 @@ public class ForthQuery extends AbstractQuery {
      * 查询手机号123开头的用户购物车中的物品ID
      * @return
      */
+    @Override
     public List<UserPhoneCartAndProductRelationResponse> query() {
         Table<User> userTable = new Table<>("user", User.class);
         Table<Phone> phoneTable = new Table<>("phone", Phone.class);
@@ -61,6 +62,8 @@ public class ForthQuery extends AbstractQuery {
 
         return result;
     }
+
+    @Override
     public List<UserPhoneCartAndProductRelationResponse> query(String method){
         if (method.contains("bnl")){
             Properties prop = new Properties();

@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class FirstQuery extends AbstractQuery {
+public class FirstQuery extends AbstractQuery implements Queryable {
 
     public FirstQuery(JoinOperation joinOperation) {
         super(joinOperation);
     }
 
+    @Override
     public List<UserCartAndProductResponse> query() {
         Table<User> userTable = new Table<>("user", User.class);
         Table<ShoppingCart> cartTable = new Table<>("cart", ShoppingCart.class);
@@ -56,6 +57,7 @@ public class FirstQuery extends AbstractQuery {
         }
         return result;
     }
+    @Override
     public List<UserCartAndProductResponse> query(String method) {
         if (method.contains("bnl")){
             Properties prop = new Properties();
@@ -64,7 +66,7 @@ public class FirstQuery extends AbstractQuery {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            int blocksize = Integer.valueOf(prop.getProperty("BLOCKSIZE"));
+            int blockSize = Integer.valueOf(prop.getProperty("BLOCKSIZE"));
             Table<User> userTable = new Table<>("user", User.class);
             Table<ShoppingCart> cartTable = new Table<>("cart", ShoppingCart.class);
             Table<ProductInShoppingCart> productRelation = new Table<>("cart_item", ProductInShoppingCart.class);
@@ -78,32 +80,32 @@ public class FirstQuery extends AbstractQuery {
             List<UserCartAndProductRelationResponse> joinres2 = new ArrayList<>();
             List<UserCartAndProductResponse> joins = new ArrayList<>();
 
-            List<User> users = userTable.readRowLimit(blocksize);
+            List<User> users = userTable.readRowLimit(blockSize);
 
             while(users.size() > 0){
-                List<ShoppingCart> carts = cartTable.readRowLimit(blocksize);
+                List<ShoppingCart> carts = cartTable.readRowLimit(blockSize);
                 while(carts.size() > 0){
                     joinres1.addAll(this.joinOperation.join(users, carts, "userId", "userId",
                             UserCartResponse.class, User.class, ShoppingCart.class));
-                    carts = cartTable.readRowLimit(blocksize);
+                    carts = cartTable.readRowLimit(blockSize);
                 }
-                users = userTable.readRowLimit(blocksize);
+                users = userTable.readRowLimit(blockSize);
                 cartTable.endRead();
                 cartTable.startRead();
             }
 
-            List<ProductInShoppingCart> relations = productRelation.readRowLimit(blocksize);
+            List<ProductInShoppingCart> relations = productRelation.readRowLimit(blockSize);
             while (relations.size()>0){
                 joinres2.addAll(this.joinOperation.join(joinres1, relations, "cartId", "cartId",
                         UserCartAndProductRelationResponse.class, UserCartResponse.class, ProductInShoppingCart.class));
-                relations = productRelation.readRowLimit(blocksize);
+                relations = productRelation.readRowLimit(blockSize);
             }
 
-            List<Product> products = productTable.readRowLimit(blocksize);
+            List<Product> products = productTable.readRowLimit(blockSize);
             while (products.size() > 0){
                 joins.addAll(this.joinOperation.join(joinres2,products,"productId", "productId",
                         UserCartAndProductResponse.class, UserCartAndProductRelationResponse.class, Product.class));
-                products = productTable.readRowLimit(blocksize);
+                products = productTable.readRowLimit(blockSize);
             }
 
             userTable.endRead();

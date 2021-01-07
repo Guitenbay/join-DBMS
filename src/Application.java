@@ -2,71 +2,66 @@ import algorithm.JoinOperation;
 
 import algorithm.impl.TestJoinOperationImpl;
 import algorithm.impl.bnl.BlockNestedLoopImpl;
-import query.FirstQuery;
-import query.SecondQuery;
-import query.ForthQuery;
-import query.ThirdQuery;
-import query.FifthQuery;
-import response.*;
+import algorithm.impl.hash.HashJoinImpl;
+import algorithm.impl.index.IndexNestedLoopJoinImpl;
+import proxy.RunTimeHandler;
+import query.*;
+import util.ClassUtils;
 
-import java.util.List;
-
-import static java.lang.System.*;
+import java.lang.reflect.InvocationTargetException;
 
 public class Application {
 
-    public static void main(String[] args) {
-        JoinOperation bnlJoin = new BlockNestedLoopImpl();
+    private static final JoinOperation bnlJoin = new BlockNestedLoopImpl();
+    private static final JoinOperation testJoin = new TestJoinOperationImpl();
+    private static final JoinOperation hashJoin = new HashJoinImpl();
+    private static final JoinOperation indexNestedLoopJoin = new IndexNestedLoopJoinImpl();
 
-        JoinOperation joinImpl = new TestJoinOperationImpl();
-//        JoinOperation joinImpl = new IndexNestedLoopJoinImpl();
-//        JoinOperation joinImpl = new HashJoinImpl();
-        
+    public static void main(String[] args) {
+        String divider = "-----------------";
+        try {
+            /* all memory/bnl/normal join on Query 1 */
+//            researchTestForQuery(FirstQuery.class, "Query 1");
+//            System.out.println(divider);
+            /* all memory/bnl/normal join on Query 2 */
+//            researchTestForQuery(SecondQuery.class, "Query 2");
+//            System.out.println(divider);
+            /* all memory/bnl/normal join on Query 3 */
+//            researchTestForQuery(ThirdQuery.class, "Query 3");
+//            System.out.println(divider);
+            /* all memory/bnl/normal join on Query 4 */
+            researchTestForQuery(ForthQuery.class, "Query 4");
+//            System.out.println(divider);
+            /* all memory/bnl/normal join on Query 5 */
+//            researchTestForQuery(FifthQuery.class, "Query 5");
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void researchTestForQuery(Class<? extends AbstractQuery> clazz, String prefix) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         final String BNL = "bnl";
         final String DEFAULT = "default";
 
-        /* ----------------- all memory/bnl/normal join on Query 1 ----------------- */
-        List<UserCartAndProductResponse> responses = new FirstQuery(joinImpl).query();
-        responses.forEach(out::println);
-        List<UserCartAndProductResponse> responseQ1Bnl = new FirstQuery(bnlJoin).query(BNL);
-        responseQ1Bnl.forEach(out::println);
-        List<UserCartAndProductResponse> responseQ1Default = new FirstQuery(bnlJoin).query(DEFAULT);
-        responseQ1Default.forEach(out::println);
+        Queryable queryableQ1Test =
+                (Queryable) new RunTimeHandler(prefix + "(TEST)", clazz.getConstructor(JoinOperation.class).newInstance(testJoin)).createProxy();
+        queryableQ1Test.query();
 
-        /* ----------------- all memory/bnl/normal join on Query 2 ----------------- */
-        List<UserPhoneResponse> responseQ2Test = new SecondQuery(joinImpl).query();
-        responseQ2Test.forEach(out::println);
-        List<UserPhoneResponse> responseQ2Bnl = new SecondQuery(bnlJoin).query(BNL);
-        responseQ2Bnl.forEach(out::println);
-        List<UserPhoneResponse> responseQ2Default = new SecondQuery(bnlJoin).query(DEFAULT);
-        responseQ2Default.forEach(out::println);
+        Queryable queryableQ1Hash =
+                (Queryable) new RunTimeHandler(prefix + "(HASH)", clazz.getConstructor(JoinOperation.class).newInstance(hashJoin)).createProxy();
+        queryableQ1Hash.query();
 
+        Queryable queryableQ1INL =
+                (Queryable) new RunTimeHandler(prefix + "(INL)", clazz.getConstructor(JoinOperation.class).newInstance(indexNestedLoopJoin)).createProxy();
+        queryableQ1INL.query();
 
-        /* ----------------- all memory/bnl/normal join on Query 3 ----------------- */
-        List<CartAndProductRelationResponse> responseQ3Test = new ThirdQuery(joinImpl).query();
-        responseQ3Test.forEach(out::println);
-        List<CartAndProductRelationResponse> responseQ3Bnl = new ThirdQuery(bnlJoin).query(BNL);
-        responseQ3Bnl.forEach(out::println);
-        List<CartAndProductRelationResponse> responseQ3Default = new ThirdQuery(bnlJoin).query(DEFAULT);
-        responseQ3Default.forEach(out::println);
+        Queryable queryableQ1Bnl =
+                (Queryable) new RunTimeHandler(prefix + "(BNL)", clazz.getConstructor(JoinOperation.class).newInstance(bnlJoin)).createProxy();
+        queryableQ1Bnl.query(BNL);
 
-
-        /* ----------------- all memory/bnl/normal join on Query 4 ----------------- */
-        List<UserPhoneCartAndProductRelationResponse> responseQ4Test = new ForthQuery(joinImpl).query();
-        responseQ4Test.forEach(out::println);
-        List<UserPhoneCartAndProductRelationResponse> responseQ4Bnl = new ForthQuery(bnlJoin).query(BNL);
-        responseQ4Bnl.forEach(out::println);
-        List<UserPhoneCartAndProductRelationResponse> responseQ4Default = new ForthQuery(bnlJoin).query(DEFAULT);
-        responseQ4Default.forEach(out::println);
-
-
-        /* ----------------- all memory/bnl/normal join on Query 5 ----------------- */
-        List<UserCartAndProductRelationResponse> responseQ5Test = new FifthQuery(joinImpl).query();
-        responseQ5Test.forEach(out::println);
-        List<UserCartAndProductRelationResponse> responseQ5Bnl = new FifthQuery(bnlJoin).query(BNL);
-        responseQ5Bnl.forEach(out::println);
-        List<UserCartAndProductRelationResponse> responseQ5Default = new FifthQuery(bnlJoin).query(DEFAULT);
-        responseQ5Default.forEach(out::println);
+        Queryable queryableQ1Default =
+                (Queryable) new RunTimeHandler(prefix + "(DEFAULT)", clazz.getConstructor(JoinOperation.class).newInstance(bnlJoin)).createProxy();
+        queryableQ1Default.query(DEFAULT);
     }
 
 }

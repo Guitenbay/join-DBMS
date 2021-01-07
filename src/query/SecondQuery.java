@@ -7,7 +7,7 @@ import table.*;
 import java.io.IOException;
 import java.util.*;
 
-public class SecondQuery extends AbstractQuery {
+public class SecondQuery extends AbstractQuery implements Queryable {
     public SecondQuery(JoinOperation joinOperation) {
         super(joinOperation);
     }
@@ -16,6 +16,7 @@ public class SecondQuery extends AbstractQuery {
      * 查询拥有两个手机号的男性用户ID、年龄及手机号
      * @return
      */
+    @Override
     public List<UserPhoneResponse> query() {
         Table<User> userTable = new Table<>("user", User.class);
         Table<Phone> phoneTable = new Table<>("phone", Phone.class);
@@ -53,6 +54,8 @@ public class SecondQuery extends AbstractQuery {
         }
         return result;
     }
+
+    @Override
     public List<UserPhoneResponse> query(String method){
         if (method.contains("bnl")){
             Properties prop = new Properties();

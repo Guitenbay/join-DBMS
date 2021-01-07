@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class ThirdQuery extends AbstractQuery {
+public class ThirdQuery extends AbstractQuery implements Queryable {
     public ThirdQuery(JoinOperation joinOperation) {
         super(joinOperation);
     }
@@ -20,6 +20,7 @@ public class ThirdQuery extends AbstractQuery {
      * 查询用户ID为123的用户购物车中数量大于2的物品ID
      * @return
      */
+    @Override
     public List<CartAndProductRelationResponse> query() {
         Table<ShoppingCart> cartTable = new Table<>("cart", ShoppingCart.class);
         Table<ProductInShoppingCart> productRelation = new Table<>("cart_item", ProductInShoppingCart.class);
@@ -48,6 +49,7 @@ public class ThirdQuery extends AbstractQuery {
 
         return result;
     }
+    @Override
     public List<CartAndProductRelationResponse> query(String method){
         if (method.contains("bnl")){
             Properties prop = new Properties();
