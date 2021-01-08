@@ -1,3 +1,5 @@
 
-W
-java:S1161":Add the "@Override" annotation above this method signature(†«ÊÐ8‡¼Â­í.
+u
+java:S1854"SRemove this useless assignment to local variable "cartAndProductRelationResponses".(ßÊ·Ëûÿÿÿÿ8Å¤·ëí.
+d
+java:S1192%"GDefine a constant instead of duplicating this literal "cartId" 4 times.(˜µÇâ8Å¤·ëí.

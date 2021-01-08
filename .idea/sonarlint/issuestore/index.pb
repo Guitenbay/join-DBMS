@@ -65,3 +65,11 @@ I
 src/query/FirstQuery.java,1\d\1d4a77f112576117a711e50c347aebe0125799e8
 J
 src/query/SecondQuery.java,1\c\1c5fcae4334d3adcf56d2e3e9c30812f12fc1fd9
+C
+src/jdbm.properties,1\8\18118c91c3c62eddff9bb4e9c522a5662b2de611
+H
+src/query/Queryable.java,5\2\5249eface94a8729d0041a9c9836d82c9fa8feff
+_
+/src/algorithm/impl/bnl/BlockNestedLoopImpl.java,3\1\314de9d60a52d41c6e939041a3d6e7a542db711a
+M
+src/proxy/RunTimeHandler.java,7\6\767ae7e0d18692619f7ed92c0a6972121bbc857e

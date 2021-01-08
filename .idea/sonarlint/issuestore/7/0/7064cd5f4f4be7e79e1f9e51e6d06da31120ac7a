@@ -1,9 +1,9 @@
 
 U
 java:S1128"8Remove this unused import 'table.ProductInShoppingCart'.(…¦ß¼8ò¾æ–í.
-R
-java:S1128"6Remove this unused import 'response.UserCartResponse'.( ¥;8ò¾æ–í.
 \
 java:S1128"@Remove this unused import 'response.UserCartAndProductResponse'.(´áš78ò¾æ–í.
 j
 java:S1128"HRemove this unused import 'response.UserCartAndProductRelationResponse'.(ôíÎùÿÿÿÿ8ò¾æ–í.
+R
+java:S1128"6Remove this unused import 'response.UserCartResponse'.( ¥;8ò¾æ–í.

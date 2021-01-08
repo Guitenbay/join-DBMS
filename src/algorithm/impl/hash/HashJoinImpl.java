@@ -2,6 +2,7 @@ package algorithm.impl.hash;
 
 import algorithm.JoinOperation;
 
+import table.Table;
 import util.ClassUtils;
 
 import java.lang.reflect.Field;
@@ -23,7 +24,7 @@ public class HashJoinImpl implements JoinOperation {
      * @return
      */
     @Override
-    public <T, U, K> List<T> join(
+    public <T, U, K> List<T> joinForMemory(
             List<U> leftList,
             List<K> rightList,
             String leftProperty,
@@ -61,8 +62,88 @@ public class HashJoinImpl implements JoinOperation {
         return entities;
     }
 
+    @Override
+    public <T, U, K> List<T> join(Table<U> leftTable, Table<K> rightTable, String leftProperty, String rightProperty, Class<T> responseClazz, Class<U> leftTableClazz, Class<K> rightTableClazz) {
+        //获取FieldName 与 Field 的键值对
+        Map<String, Field> leftFieldMap = ClassUtils.getFieldMapFor(leftTableClazz);
+        Map<String, Field> rightFieldMap = ClassUtils.getFieldMapFor(rightTableClazz);
+        //是否存在join的条件
+        if(!leftFieldMap.containsKey(leftProperty) || !rightFieldMap.containsKey(rightProperty)){
+            System.out.println("Join error: no such property");
+            return null;
+        }
+        List<T> entities = null;
+        Map<Integer,HashNode> tableHashMap = null;
+        //判断左表右表的大小
+        //对小表进行hash处理，大表进行join匹配
+        if(leftTable.getTotalSpace()>=rightTable.getTotalSpace()){
+            tableHashMap = doHash(rightTable,rightFieldMap,rightProperty);
+            entities = doJoin(leftTable,leftFieldMap,leftProperty,tableHashMap,rightFieldMap,rightProperty,responseClazz);
+        }else{
+            tableHashMap = doHash(leftTable,leftFieldMap,leftProperty);
+            entities = doJoin(rightTable,rightFieldMap,rightProperty,tableHashMap,leftFieldMap,leftProperty,responseClazz);
+        }
+        return entities;
+    }
+
+    @Override
+    public <T, U, K> List<T> join(List<U> leftList, Table<K> rightTable, String leftProperty, String rightProperty, Class<T> responseClazz, Class<U> leftTableClazz, Class<K> rightTableClazz) {
+        //获取FieldName 与 Field 的键值对
+        Map<String, Field> leftFieldMap = ClassUtils.getFieldMapFor(leftTableClazz);
+        Map<String, Field> rightFieldMap = ClassUtils.getFieldMapFor(rightTableClazz);
+        //是否存在join的条件
+        if(!leftFieldMap.containsKey(leftProperty) || !rightFieldMap.containsKey(rightProperty)){
+            System.out.println("Join error: no such property");
+            return null;
+        }
+        List<T> entities = null;
+        Map<Integer,HashNode> tableHashMap = null;
+        //判断左表右表的大小
+        //对小表进行hash处理，大表进行join匹配
+        tableHashMap = doHash(leftList,leftFieldMap,leftProperty);
+        entities = doJoin(rightTable,rightFieldMap,rightProperty,tableHashMap,leftFieldMap,leftProperty,responseClazz);
+        return entities;
+    }
+
+    private <T> Map<Integer, HashNode> doHash(
+            Table<T> smallTable,
+            Map<String, Field> smallFieldMap,
+            String smallProperty) {
+        //对小表做hash处理
+        HashMap<Integer, HashNode> tableHashMap = new HashMap<>();
+        smallTable.startRead();
+        //遍历小表
+        for (T smallData = smallTable.readRowOnlyOne(); smallData != null; smallData = smallTable.readRowOnlyOne()) {
+            //获取小值
+            final Object smallDataValue = ClassUtils.getValueOfField(smallFieldMap.get(smallProperty), smallData);
+            //获取小值的hash值
+            int smallDataHashCode = smallDataValue.toString().hashCode();
+            //判断当前hash值是否存在，不存在则先插入一个头节点，便于join的优化操作
+            if (!tableHashMap.containsKey(smallDataHashCode)) {
+                //新建头节点并插入链表
+                HashNode headNode = new HashNode();
+                tableHashMap.put(smallDataHashCode, headNode);
+                //新建当前数据节点，并插入链表
+                HashNode dataNode = new HashNode();
+                dataNode.setData(smallData);
+                dataNode.setNext(null);
+                headNode.setNext(dataNode);
+            } else {
+                //获取头节点
+                HashNode headNode = tableHashMap.get(smallDataHashCode);
+                //新建当前数据节点并插入，头插法，方便，不用记录当前链表的最后一个节点
+                HashNode dataNode = new HashNode();
+                dataNode.setData(smallData);
+                dataNode.setNext(headNode.getNext());
+                headNode.setNext(dataNode);
+            }
+        }
+        smallTable.endRead();
+        return tableHashMap;
+    }
+
     //hash处理函数
-    public <T> Map<Integer, HashNode> doHash(
+    private <T> Map<Integer, HashNode> doHash(
             List<T> smallList,
             Map<String, Field> smallFieldMap,
             String smallProperty) {
@@ -97,12 +178,69 @@ public class HashJoinImpl implements JoinOperation {
         return tableHashMap;
     }
 
+    private <T,U> List<T> doJoin(
+            Table<U> bigTable,
+            Map<String, Field> bigFieldMap,
+            String bigProperty,
+            Map<Integer, HashNode> tableHashMap,
+            Map<String, Field> smallFieldMap,
+            String smallProperty,
+            Class<T> responseClazz){
+        List<T> entities = new ArrayList<>();
+        //遍历大表
+        bigTable.startRead();
+        for (U bigData = bigTable.readRowOnlyOne(); bigData != null; bigData = bigTable.readRowOnlyOne()){
+            // 获取大值
+            final Object bigDataValue = ClassUtils.getValueOfField(bigFieldMap.get(bigProperty), bigData);
+            //获取大值的hash值
+            int bigDataHashCode = bigDataValue.toString().hashCode();
+            //判断当前map里是否有对应的hashcode
+            if(tableHashMap.containsKey(bigDataHashCode)){
+                //根据大值的HashCode获取头节点
+                HashNode headNode = tableHashMap.get(bigDataHashCode);
+                //遍历链表
+                while(headNode.getNext()!=null){
+                    HashNode dataNode = headNode.getNext();
+                    // 获取小值
+                    final Object smallDataValue = ClassUtils.getValueOfField(smallFieldMap.get(smallProperty), dataNode.getData());
+                    //判断 join 条件是否一致
+                    if (bigDataValue.toString().equals(smallDataValue.toString())) {
+                        T entity = ClassUtils.createEntityFor(responseClazz);
+                        // 设置 Join 后的对象的属性值
+                        for (Field responseField : responseClazz.getDeclaredFields()) {
+                            final String responseFieldName = responseField.getName();
+                            if (bigFieldMap.containsKey(responseFieldName)) {
+                                ClassUtils.setValueOfFieldFor(
+                                        entity,
+                                        responseField,
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(bigFieldMap.get(responseFieldName), bigData)));
+                            } else {
+                                ClassUtils.setValueOfFieldFor(
+                                        entity,
+                                        responseField,
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(smallFieldMap.get(responseFieldName), dataNode.getData())));
+                            }
+                        }
+                        entities.add(entity);
+                        headNode = dataNode;
+                        //break;
+                    }else {
+                        //join条件不相同的话，将当前节点表示为头节点
+                        headNode = dataNode;
+                    }
+                }
+            }
+        }
+        bigTable.endRead();
+        return entities;
+    }
+
     //join处理函数
-    public <T,U> List<T> doJoin(
+    private <T,U> List<T> doJoin(
             List<U> bigList,
             Map<String, Field> bigFieldMap,
             String bigProperty,
-            Map<Integer,HashNode> tableHashMap,
+            Map<Integer, HashNode> tableHashMap,
             Map<String, Field> smallFieldMap,
             String smallProperty,
             Class<T> responseClazz){

@@ -1,11 +1,12 @@
 
-Z	java:S106"9Replace this use of System.out or System.err by a logger.(³ö¸ùÿÿÿÿ8¯ú¼­í.
-U	java:S106"9Replace this use of System.out or System.err by a logger.(¢† ˜8ÅïÖ­í.
-U	java:S106"9Replace this use of System.out or System.err by a logger.(¤ôù…8äœó­í.
-Z	java:S106"9Replace this use of System.out or System.err by a logger.(¡¿º´ûÿÿÿÿ8Õ•»­í.
-U	java:S106"9Replace this use of System.out or System.err by a logger.(‡’å»8…Îõ–í.
-Z	java:S106 "9Replace this use of System.out or System.err by a logger.(²ßğ¥üÿÿÿÿ8¬ˆ®í.
-U	java:S106"9Replace this use of System.out or System.err by a logger.(â¿‚8äœó­í.
-Z	java:S106"9Replace this use of System.out or System.err by a logger.( şşáøÿÿÿÿ8¬ˆ®í.
-Z	java:S106"9Replace this use of System.out or System.err by a logger.(¥¿´¶ùÿÿÿÿ8ÅïÖ­í.
-Z	java:S106"9Replace this use of System.out or System.err by a logger.(›€åşÿÿÿÿ8…ç»­í.
+o
+java:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(Ì°¬“8ğø‹ìí.
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¸ÿî8Ğºùëí.
+o
+java:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(Ì°¬“8îŸŒìí.
+o
+java:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(Ì°¬“8ğø‹ìí.
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¸ÿî8Ğºùëí.
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¸ÿî8Ğºùëí.
+o
+java:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(Ì°¬“8îŸŒìí.

@@ -1,6 +1,18 @@
 
-Z	java:S106*"9Replace this use of System.out or System.err by a logger.(–ÆÙ¦ıÿÿÿÿ8Õõç.
+p
+java:S3776ˆ"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(¢ƒØÆ8«Îøêí.
+I
+java:S1168"+Return an empty collection instead of null.(¥¹ï8«Îøêí.
 H
-java:S1168+"+Return an empty collection instead of null.(¥¹ï8ÕÕ’ç.
+java:S1168["+Return an empty collection instead of null.(¥¹ï8İ­•éí.
+H
+java:S1168,"+Return an empty collection instead of null.(¥¹ï8ÕÕ’ç.
+t
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(±’Íáøÿÿÿÿ8ê·Ìç.
+Z	java:S106+"9Replace this use of System.out or System.err by a logger.(–ÆÙ¦ıÿÿÿÿ8Õõç.
+Z	java:S106Z"9Replace this use of System.out or System.err by a logger.(–ÆÙ¦ıÿÿÿÿ8İ­•éí.
 o
-java:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ŠİæÔ8ê·Ìç.
+java:S3776T"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(Şïš³8İ­•éí.
+[	java:S106"9Replace this use of System.out or System.err by a logger.(–ÆÙ¦ıÿÿÿÿ8«Îøêí.
+
+java:S1192+"]Define a constant instead of duplicating this literal "Join error: no such property" 3 times.(–ÆÙ¦ıÿÿÿÿ8«Îøêí.

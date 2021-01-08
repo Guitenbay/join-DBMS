@@ -1,5 +1,6 @@
 package algorithm.impl.index;
 import algorithm.JoinOperation;
+import table.Table;
 import util.ClassUtils;
 
 import java.lang.reflect.Field;
@@ -24,7 +25,7 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
      * @return
      */
     @Override
-    public <T, U, K> List<T> join(
+    public <T, U, K> List<T> joinForMemory(
             List<U> leftList,
             List<K> rightList,
             String leftProperty,
@@ -45,7 +46,6 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
 
         //创建索引表
         BPlusTree<K, String> b = new BPlusTree<>(100);
-        int x=0;
         for (K right:rightList) {
             Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
             b.insert(right,rightValue.toString());
@@ -65,7 +65,6 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
                     }
                     else
                         break;
-                    assert leftValue != null;
                     final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
                     assert rightValue!=null;
 
@@ -93,8 +92,139 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
 
                     }
                 }
-            }else
-                continue;
+            }
+
+        }
+        return entities;
+    }
+
+    @Override
+    public <T, U, K> List<T> join(Table<U> leftTable, Table<K> rightTable, String leftProperty, String rightProperty, Class<T> responseClazz, Class<U> leftTableClazz, Class<K> rightTableClazz) {
+        // 获取 FieldName 与 Field 的键值对
+        Map<String, Field> leftFieldMap = ClassUtils.getFieldMapFor(leftTableClazz);
+        Map<String, Field> rightFieldMap = ClassUtils.getFieldMapFor(rightTableClazz);
+        // 是否存在 join 的条件
+        if (!leftFieldMap.containsKey(leftProperty) || !rightFieldMap.containsKey(rightProperty)) {
+            System.out.println("Join error: no such property");
+            return null;
+        }
+
+        List<T> entities = new ArrayList<>();
+
+        //创建索引表
+        BPlusTree<K, String> b = new BPlusTree<>(100);
+        rightTable.startRead();
+        for (K right = rightTable.readRowOnlyOne(); right != null; right = rightTable.readRowOnlyOne()) {
+            Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
+            b.insert(right,rightValue.toString());
+        }
+        rightTable.endRead();
+
+        //创建连接
+        leftTable.startRead();
+        for (U left = leftTable.readRowOnlyOne(); left != null; left = leftTable.readRowOnlyOne()) {
+            // 获取左值
+            final  Object leftValue = ClassUtils.getValueOfField(leftFieldMap.get(leftProperty), left);
+            // 索引右值
+            final  K[] value = b.find(leftValue.toString());
+            K right=null;
+            if (value!=null) {
+                for (int i=0;i<1000;i++){
+                    if (value[i]!=null) {
+                        right = value[i];
+                    }
+                    else
+                        break;
+                    final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
+                    assert rightValue != null;
+                    // 判断 join 条件是否一致
+                    if (leftValue.toString().equals(rightValue.toString())) {
+                        T entity = ClassUtils.createEntityFor(responseClazz);
+                        // 设置 Join 后的对象的属性值
+                        for (Field responseField : responseClazz.getDeclaredFields()) {
+                            final String responseFieldName = responseField.getName();
+                            if (leftFieldMap.containsKey(responseFieldName)) {
+                                ClassUtils.setValueOfFieldFor(
+                                        entity,
+                                        responseField,
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(leftFieldMap.get(responseFieldName), left)));
+                            } else {
+                                ClassUtils.setValueOfFieldFor(
+                                        entity,
+                                        responseField,
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(rightFieldMap.get(responseFieldName), right)));
+                            }
+                        }
+                        entities.add(entity);
+                    }
+                }
+            }
+        }
+        leftTable.endRead();
+        return entities;
+    }
+
+    @Override
+    public <T, U, K> List<T> join(List<U> leftList, Table<K> rightTable, String leftProperty, String rightProperty, Class<T> responseClazz, Class<U> leftTableClazz, Class<K> rightTableClazz) {
+        // 获取 FieldName 与 Field 的键值对
+        Map<String, Field> leftFieldMap = ClassUtils.getFieldMapFor(leftTableClazz);
+        Map<String, Field> rightFieldMap = ClassUtils.getFieldMapFor(rightTableClazz);
+        // 是否存在 join 的条件
+        if (!leftFieldMap.containsKey(leftProperty) || !rightFieldMap.containsKey(rightProperty)) {
+            System.out.println("Join error: no such property");
+            return null;
+        }
+
+        List<T> entities = new ArrayList<>();
+
+        //创建索引表
+        BPlusTree<K, String> b = new BPlusTree<>(100);
+
+        rightTable.startRead();
+        for (K right = rightTable.readRowOnlyOne(); right != null; right = rightTable.readRowOnlyOne()) {
+            Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
+            b.insert(right,rightValue.toString());
+        }
+        rightTable.endRead();
+
+        //创建连接
+        for (U left: leftList) {
+            // 获取左值
+            final Object leftValue = ClassUtils.getValueOfField(leftFieldMap.get(leftProperty), left);
+            // 索引右值
+            final K[] value = b.find(leftValue.toString());
+            K right=null;
+            if (value!=null) {
+                for (int i=0;i<1000;i++){
+                    if (value[i]!=null) {
+                        right = value[i];
+                    }
+                    else
+                        break;
+                    final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
+                    assert rightValue!=null;
+                    // 判断 join 条件是否一致
+                    if (leftValue.toString().equals(rightValue.toString())) {
+                        T entity = ClassUtils.createEntityFor(responseClazz);
+                        // 设置 Join 后的对象的属性值
+                        for (Field responseField : responseClazz.getDeclaredFields()) {
+                            final String responseFieldName = responseField.getName();
+                            if (leftFieldMap.containsKey(responseFieldName)) {
+                                ClassUtils.setValueOfFieldFor(
+                                        entity,
+                                        responseField,
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(leftFieldMap.get(responseFieldName), left)));
+                            } else {
+                                ClassUtils.setValueOfFieldFor(
+                                        entity,
+                                        responseField,
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(rightFieldMap.get(responseFieldName), right)));
+                            }
+                        }
+                        entities.add(entity);
+                    }
+                }
+            }
 
         }
         return entities;

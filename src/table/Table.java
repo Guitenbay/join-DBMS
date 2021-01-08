@@ -3,10 +3,7 @@ package table;
 import org.apache.commons.beanutils.ConvertUtils;
 import util.ClassUtils;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +43,10 @@ public class Table<T> {
         }
     }
 
+    public long getTotalSpace() {
+        return new File(PATH + "/" + name + ".txt").getTotalSpace();
+    }
+
     public List<T> readRow() {
         List<T> results = new ArrayList<>();
         try {
@@ -74,14 +75,46 @@ public class Table<T> {
         return results;
     }
 
-    public List<T> readRowLimit(int num) {
-        List<T> results = new ArrayList<>();
+    public T readRowOnlyOne() {
+        T result = null;
         try {
-            String line = null;
+            String line;
             if (this.fieldValues.length == 0) {
                 // 读到末尾是 NULL
                 if (null != (line = this.bufferedReader.readLine())) {
                     this.fieldValues = line.split(",");
+                } else {
+                    return null;
+                }
+            }
+            // 读到末尾是 NULL
+            line = this.bufferedReader.readLine();
+            if (line == null) return null;
+            result = ClassUtils.createEntityFor(this.tableClazz);
+            String[] values = line.split(",");
+            for (int i=0; i < this.fieldValues.length; i++) {
+                if (fieldMap.containsKey(fieldValues[i])) {
+                    final Field field = fieldMap.get(fieldValues[i]);
+                    ClassUtils.setValueOfFieldFor(result, field, ConvertUtils.convert(values[i], field.getType()));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public List<T> readRowLimit(int num) {
+        List<T> results = null;
+        try {
+            String line;
+            if (this.fieldValues.length == 0) {
+                // 读到末尾是 NULL
+                if (null != (line = this.bufferedReader.readLine())) {
+                    this.fieldValues = line.split(",");
+                } else {
+                    return null;
                 }
             }
             // 读到末尾是 NULL
@@ -95,6 +128,9 @@ public class Table<T> {
                         final Field field = fieldMap.get(fieldValues[i]);
                         ClassUtils.setValueOfFieldFor(entity, field, ConvertUtils.convert(values[i], field.getType()));
                     }
+                }
+                if (results == null) {
+                    results = new ArrayList<>();
                 }
                 results.add(entity);
             }

@@ -73,8 +73,8 @@ public class BPlusTree<T, V extends Comparable<V>>{
         //子节点
         protected Node<T, V>[] childs;
         //键（子节点）数量
-        protected   Node<T,V> left;
-        protected   Node<T,V> right;
+//        protected   Node<T,V> left;
+//        protected   Node<T,V> right;
         protected Integer number;
         //键
         protected Object keys[];
@@ -149,10 +149,10 @@ public class BPlusTree<T, V extends Comparable<V>>{
             }
 
 //            System.out.println("非叶子节点查找key: " + this.keys[i]);
-             if (i>0){
-                 this.childs[i-1].right=this.childs[i];
-                 this.childs[i].left=this.childs[i-1];
-             }
+//             if (i>0){
+//                 this.childs[i-1].right=this.childs[i];
+//                 this.childs[i].left=this.childs[i-1];
+//             }
             return this.childs[i].insert(value, key);
         }
 
@@ -181,8 +181,8 @@ public class BPlusTree<T, V extends Comparable<V>>{
                 this.keys[1] = node2.keys[node2.number - 1];
                 this.childs[0] = node1;
                 this.childs[1] = node2;
-                node1.right=node2;
-                node2.left=node1;
+//                node1.right=node2;
+//                node2.left=node1;
                 this.number += 2;
                 return this;
             }
@@ -197,6 +197,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
 
             Object tempKeys[] = new Object[maxNumber];
             Object tempChilds[] = new Node[maxNumber];
+
 
             System.arraycopy(this.keys, 0, tempKeys, 0, i + 1);
             System.arraycopy(this.childs, 0, tempChilds, 0, i + 1);
@@ -306,9 +307,9 @@ public class BPlusTree<T, V extends Comparable<V>>{
                     LeafNode templ=this;
                     LeafNode tempr=this;
 //                    System.out.println("*");
-                    if (this.left==null)
+//                    if (this.left==null)
 //                        System.out.println("this leafnode's left is null");
-                    if(this.right==null)
+//                    if(this.right==null)
 //                        System.out.println("this leafnode's right is null");
 //                    System.out.println(k);
                     while(true){

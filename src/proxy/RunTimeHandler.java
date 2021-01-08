@@ -23,10 +23,12 @@ public class RunTimeHandler implements InvocationHandler {
         long start = System.currentTimeMillis();
         List<?> result = (List) method.invoke(this.target, objects);
         long end = System.currentTimeMillis();
-        err.println(String.format("%s 用时:\t%d", this.prefix, end - start));
-        result.forEach(out::println);
-        out.println(String.format("查询到 %d 条记录", result.size()));
-        return result;
+        err.println(
+                String.format("%s 用时：%dms\t查询结果：%d", this.prefix, end - start, result.size())
+        );
+//        result.forEach(out::println);
+//        out.println(String.format("查询到 %d 条记录", result.size()));
+        return null;
     }
 
     public Object createProxy() {

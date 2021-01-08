@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Join-DBMS:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Join_DBMS_jar</output-path>
+    <root id="archive" name="Join-DBMS.jar">
+      <element id="module-output" name="Join-DBMS" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/commons-beanutils-1.9.4/commons-beanutils-1.9.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/commons-beanutils-1.9.4/commons-beanutils-1.9.4-tests.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/commons-beanutils-1.9.4/commons-beanutils-1.9.4-javadoc.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/commons-beanutils-1.9.4/commons-beanutils-1.9.4-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/commons-beanutils-1.9.4/commons-beanutils-1.9.4-test-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/commons-logging-1.2/commons-logging-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/commons-logging-1.2/commons-logging-1.2-javadoc.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
