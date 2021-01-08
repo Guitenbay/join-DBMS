@@ -1,22 +1,18 @@
 
-[	java:S106”"9Replace this use of System.out or System.err by a logger.(–ÆÙ¦ıÿÿÿÿ8÷‡äëí.
-m
-java:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(±’Íáøÿÿÿÿ
-O
-java:S1128"-Remove this unused import 'query.FirstQuery'.(Â„ÔĞÿÿÿÿÿ8¨›äëí.
-
-java:S1192)"]Define a constant instead of duplicating this literal "Join error: no such property" 3 times.(–ÆÙ¦ıÿÿÿÿ8˜üêí.
-R
-java:S1128"0Remove this unused import 'java.io.IOException'.(ªº»Úıÿÿÿÿ8¨›äëí.
-A
-java:S1168*"+Return an empty collection instead of null.(¥¹ï
-o
-java:S3776T"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ŠİæÔ8‹úèí.
-Z	java:S106a"9Replace this use of System.out or System.err by a logger.(–ÆÙ¦ıÿÿÿÿ8‹úèí.
-H
-java:S1168b"+Return an empty collection instead of null.(¥¹ï8‹úèí.
+[	java:S106™"9Replace this use of System.out or System.err by a logger.(–ÆÙ¦ıÿÿÿÿ8˜½ †î.
 I
-java:S1168•"+Return an empty collection instead of null.(¥¹ï8÷‡äëí.
-S	java:S106)"9Replace this use of System.out or System.err by a logger.(–ÆÙ¦ıÿÿÿÿ
+java:S1168š"+Return an empty collection instead of null.(¥¹ï8˜½ †î.
+H
+java:S1168`"+Return an empty collection instead of null.(¥¹ï8‹úèí.
 p
-java:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(¢ƒØÆ8÷‡äëí.
+java:S3776“"RRefactor this method to reduce its Cognitive Complexity from 24 to the 15 allowed.(¢ƒØÆ8˜½ †î.
+A
+java:S1168("+Return an empty collection instead of null.(¥¹ï
+m
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(±’Íáøÿÿÿÿ
+Z	java:S106_"9Replace this use of System.out or System.err by a logger.(–ÆÙ¦ıÿÿÿÿ8‹úèí.
+
+java:S1192'"]Define a constant instead of duplicating this literal "Join error: no such property" 3 times.(–ÆÙ¦ıÿÿÿÿ8˜üêí.
+S	java:S106'"9Replace this use of System.out or System.err by a logger.(–ÆÙ¦ıÿÿÿÿ
+o
+java:S3776R"RRefactor this method to reduce its Cognitive Complexity from 31 to the 15 allowed.(ŠİæÔ8‹úèí.

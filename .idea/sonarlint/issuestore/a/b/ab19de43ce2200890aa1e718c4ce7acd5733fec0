@@ -1,12 +1,15 @@
 
-o
-java:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(ּ°¬“8נר‹לם.
-S	java:S106"9Replace this use of System.out or System.err by a logger.(¸ÿמ8׀÷שכם.
-o
-java:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(ּ°¬“8מלם.
-o
-java:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(ּ°¬“8נר‹לם.
-S	java:S106"9Replace this use of System.out or System.err by a logger.(¸ÿמ8׀÷שכם.
-S	java:S106"9Replace this use of System.out or System.err by a logger.(¸ÿמ8׀÷שכם.
-o
-java:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(ּ°¬“8מלם.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(¸ÿמ8׀÷שכם.
+U	java:S106!"9Replace this use of System.out or System.err by a logger.(¸ÿמ8׀÷שכם.
+q
+java:S1215$"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(ּ°¬“8נר‹לם.
+U	java:S106%"9Replace this use of System.out or System.err by a logger.(¸ÿמ8׀÷שכם.
+q
+java:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(ּ°¬“8נר‹לם.
+q
+java:S1215 "TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(ּ°¬“8מלם.
+q
+java:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(ּ°¬“8…­—‡מ.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(¸ÿמ8…­—‡מ.
+q
+java:S1215("TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(ּ°¬“8מלם.

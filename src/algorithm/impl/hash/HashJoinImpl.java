@@ -2,9 +2,12 @@ package algorithm.impl.hash;
 
 import algorithm.JoinOperation;
 
+import config.Config;
 import table.Table;
 import util.ClassUtils;
+import util.FileUtils;
 
+import java.io.BufferedWriter;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -59,7 +62,31 @@ public class HashJoinImpl implements JoinOperation {
             tableHashMap = doHash(leftList,leftFieldMap,leftProperty);
             entities = doJoin(rightList,rightFieldMap,rightProperty,tableHashMap,leftFieldMap,leftProperty,responseClazz);
         }
+        System.out.println(leftTableClazz.getName() + " 与 " + rightTableClazz.getName() + " Join 结束");
         return entities;
+    }
+
+    @Override
+    public <T, U, K> void joinAndWrite(Table<U> leftTable, Table<K> rightTable, String leftProperty, String rightProperty, Class<T> responseClazz, Class<U> leftTableClazz, Class<K> rightTableClazz) {
+        //获取FieldName 与 Field 的键值对
+        Map<String, Field> leftFieldMap = ClassUtils.getFieldMapFor(leftTableClazz);
+        Map<String, Field> rightFieldMap = ClassUtils.getFieldMapFor(rightTableClazz);
+        //是否存在join的条件
+        if(!leftFieldMap.containsKey(leftProperty) || !rightFieldMap.containsKey(rightProperty)){
+            System.out.println("Join error: no such property");
+            return;
+        }
+        Map<Integer,HashNode> tableHashMap;
+        //判断左表右表的大小
+        //对小表进行hash处理，大表进行join匹配
+        if(leftTable.getTotalSpace()>=rightTable.getTotalSpace()){
+            tableHashMap = doHash(rightTable,rightFieldMap,rightProperty);
+            doJoinAndWrite(leftTable,leftFieldMap,leftProperty,tableHashMap,rightFieldMap,rightProperty,responseClazz);
+        }else{
+            tableHashMap = doHash(leftTable,leftFieldMap,leftProperty);
+            doJoinAndWrite(rightTable,rightFieldMap,rightProperty,tableHashMap,leftFieldMap,leftProperty,responseClazz);
+        }
+        System.out.println(leftTableClazz.getName() + " 与 " + rightTableClazz.getName() + " Join 结束");
     }
 
     @Override
@@ -83,6 +110,7 @@ public class HashJoinImpl implements JoinOperation {
             tableHashMap = doHash(leftTable,leftFieldMap,leftProperty);
             entities = doJoin(rightTable,rightFieldMap,rightProperty,tableHashMap,leftFieldMap,leftProperty,responseClazz);
         }
+        System.out.println(leftTableClazz.getName() + " 与 " + rightTableClazz.getName() + " Join 结束");
         return entities;
     }
 
@@ -102,6 +130,7 @@ public class HashJoinImpl implements JoinOperation {
         //对小表进行hash处理，大表进行join匹配
         tableHashMap = doHash(leftList,leftFieldMap,leftProperty);
         entities = doJoin(rightTable,rightFieldMap,rightProperty,tableHashMap,leftFieldMap,leftProperty,responseClazz);
+        System.out.println(leftTableClazz.getName() + " 与 " + rightTableClazz.getName() + " Join 结束");
         return entities;
     }
 
@@ -177,6 +206,67 @@ public class HashJoinImpl implements JoinOperation {
         }
         return tableHashMap;
     }
+
+    private <T,U> void doJoinAndWrite(
+            Table<U> bigTable,
+            Map<String, Field> bigFieldMap,
+            String bigProperty,
+            Map<Integer, HashNode> tableHashMap,
+            Map<String, Field> smallFieldMap,
+            String smallProperty,
+            Class<T> responseClazz){
+        BufferedWriter writer = FileUtils.startWrite(Config.PATH + "/" + responseClazz.getSimpleName() + ".txt");
+        if (writer == null) return;
+        String[] fieldValues = ClassUtils.getFieldMapFor(responseClazz).keySet().toArray(new String[0]);
+        FileUtils.writeHead(writer, fieldValues);
+        //遍历大表
+        bigTable.startRead();
+        for (U bigData = bigTable.readRowOnlyOne(); bigData != null; bigData = bigTable.readRowOnlyOne()){
+            // 获取大值
+            final Object bigDataValue = ClassUtils.getValueOfField(bigFieldMap.get(bigProperty), bigData);
+            //获取大值的hash值
+            int bigDataHashCode = bigDataValue.toString().hashCode();
+            //判断当前map里是否有对应的hashcode
+            if(tableHashMap.containsKey(bigDataHashCode)){
+                //根据大值的HashCode获取头节点
+                HashNode headNode = tableHashMap.get(bigDataHashCode);
+                //遍历链表
+                while (headNode.getNext()!=null) {
+                    HashNode dataNode = headNode.getNext();
+                    // 获取小值
+                    final Object smallDataValue = ClassUtils.getValueOfField(smallFieldMap.get(smallProperty), dataNode.getData());
+                    //判断 join 条件是否一致
+                    if (bigDataValue.toString().equals(smallDataValue.toString())) {
+                        T entity = ClassUtils.createEntityFor(responseClazz);
+                        // 设置 Join 后的对象的属性值
+                        for (Field responseField : responseClazz.getDeclaredFields()) {
+                            final String responseFieldName = responseField.getName();
+                            if (bigFieldMap.containsKey(responseFieldName)) {
+                                ClassUtils.setValueOfFieldFor(
+                                        entity,
+                                        responseField,
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(bigFieldMap.get(responseFieldName), bigData)));
+                            } else {
+                                ClassUtils.setValueOfFieldFor(
+                                        entity,
+                                        responseField,
+                                        Objects.requireNonNull(ClassUtils.getValueOfField(smallFieldMap.get(responseFieldName), dataNode.getData())));
+                            }
+                        }
+                        FileUtils.writeRow(writer, fieldValues, entity, responseClazz);
+                        headNode = dataNode;
+                        //break;
+                    }else {
+                        //join条件不相同的话，将当前节点表示为头节点
+                        headNode = dataNode;
+                    }
+                }
+            }
+        }
+        bigTable.endRead();
+        FileUtils.endWrite(writer);
+    }
+
 
     private <T,U> List<T> doJoin(
             Table<U> bigTable,

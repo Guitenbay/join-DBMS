@@ -1,5 +1,7 @@
 package table;
 
+import config.Config;
+import javafx.application.Application;
 import org.apache.commons.beanutils.ConvertUtils;
 import util.ClassUtils;
 
@@ -10,12 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Table<T> {
-    private static String PATH = ".\\dbs";
     private String name;
     private Class<T> tableClazz;
     private BufferedReader bufferedReader;
     private String[] fieldValues = new String[0];
     private Map<String, Field> fieldMap;
+    private int row = 0;
 
     public Table(String name, Class<T> tableClazz) {
         this.name = name;
@@ -25,9 +27,16 @@ public class Table<T> {
 
     public boolean startRead() {
         try {
-            this.bufferedReader = new BufferedReader(new FileReader(PATH + "/" + name + ".txt"));
+            System.out.println("开始读取 " + this.name + " 表");
+            this.row = 0;
+            this.bufferedReader = new BufferedReader(new FileReader(Config.PATH + "/" + name + ".txt"));
+            // 读到末尾是 NULL
+            String line = this.bufferedReader.readLine();
+            if (null != line) {
+                this.fieldValues = line.split(",");
+            }
             return true;
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -35,6 +44,7 @@ public class Table<T> {
 
     public boolean endRead() {
         try {
+            System.out.println(name + "\t表总行数：" + row);
             this.bufferedReader.close();
             return true;
         } catch (IOException e) {
@@ -44,30 +54,24 @@ public class Table<T> {
     }
 
     public long getTotalSpace() {
-        return new File(PATH + "/" + name + ".txt").getTotalSpace();
+        return new File(Config.PATH + "/" + name + ".txt").getTotalSpace();
     }
 
     public List<T> readRow() {
-        List<T> results = new ArrayList<>();
+        List<T> results = null;
         try {
-            String line = null;
-            if (this.fieldValues.length == 0) {
-                // 读到末尾是 NULL
-                if (null != (line = this.bufferedReader.readLine())) {
-                    this.fieldValues = line.split(",");
-                }
-            }
+            String line;
             // 读到末尾是 NULL
             while (null != (line = this.bufferedReader.readLine())) {
-                T entity = ClassUtils.createEntityFor(this.tableClazz);
-                String[] values = line.split(",");
-                for (int i=0; i < this.fieldValues.length; i++) {
-                    if (fieldMap.containsKey(fieldValues[i])) {
-                        final Field field = fieldMap.get(fieldValues[i]);
-                        ClassUtils.setValueOfFieldFor(entity, field, ConvertUtils.convert(values[i], field.getType()));
+                T entity = lineToEntity(line);
+                if (entity != null) {
+                    row++;
+//                    System.out.println(row + " " + line);
+                    if (results == null) {
+                        results = new ArrayList<>();
                     }
+                    results.add(entity);
                 }
-                results.add(entity);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,18 +94,14 @@ public class Table<T> {
             // 读到末尾是 NULL
             line = this.bufferedReader.readLine();
             if (line == null) return null;
-            result = ClassUtils.createEntityFor(this.tableClazz);
-            String[] values = line.split(",");
-            for (int i=0; i < this.fieldValues.length; i++) {
-                if (fieldMap.containsKey(fieldValues[i])) {
-                    final Field field = fieldMap.get(fieldValues[i]);
-                    ClassUtils.setValueOfFieldFor(result, field, ConvertUtils.convert(values[i], field.getType()));
-                }
+            result = lineToEntity(line);
+            if (result != null) {
+                row++;
+//                System.out.println(row + " " + line);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return result;
     }
 
@@ -121,22 +121,32 @@ public class Table<T> {
             for (int lineNum = 0; lineNum < num; lineNum++) {
                 line = this.bufferedReader.readLine();
                 if (line == null) break;
-                T entity = ClassUtils.createEntityFor(this.tableClazz);
-                String[] values = line.split(",");
-                for (int i=0; i < this.fieldValues.length; i++) {
-                    if (fieldMap.containsKey(fieldValues[i])) {
-                        final Field field = fieldMap.get(fieldValues[i]);
-                        ClassUtils.setValueOfFieldFor(entity, field, ConvertUtils.convert(values[i], field.getType()));
+                T entity = lineToEntity(line);
+                if (entity != null) {
+                    row++;
+//                    System.out.println(row + " " + line);
+                    if (results == null) {
+                        results = new ArrayList<>();
                     }
+                    results.add(entity);
                 }
-                if (results == null) {
-                    results = new ArrayList<>();
-                }
-                results.add(entity);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return results;
+    }
+
+    private T lineToEntity(String line) {
+        T entity = ClassUtils.createEntityFor(this.tableClazz);
+        String[] values = line.split(",");
+        if (this.fieldValues.length != values.length) return null;
+        for (int i=0; i < this.fieldValues.length; i++) {
+            if (fieldMap.containsKey(fieldValues[i])) {
+                final Field field = fieldMap.get(fieldValues[i]);
+                ClassUtils.setValueOfFieldFor(entity, field, ConvertUtils.convert(values[i], field.getType()));
+            }
+        }
+        return entity;
     }
 }

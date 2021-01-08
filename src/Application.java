@@ -44,9 +44,9 @@ public class Application {
     }
 
     private static void researchTestForQuery(Class<? extends AbstractQuery> clazz, String prefix, String type) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Queryable queryableQ1Test =
-                (Queryable) new RunTimeHandler(prefix + " (D) " + type, clazz.getConstructor(JoinOperation.class).newInstance(testJoin)).createProxy();
-        queryableQ1Test.query(type);
+//        Queryable queryableQ1Test =
+//                (Queryable) new RunTimeHandler(prefix + " (D) " + type, clazz.getConstructor(JoinOperation.class).newInstance(testJoin)).createProxy();
+//        queryableQ1Test.query(type);
 
         Queryable queryableQ1Hash =
                 (Queryable) new RunTimeHandler(prefix + " (H) " + type, clazz.getConstructor(JoinOperation.class).newInstance(hashJoin)).createProxy();

@@ -69,6 +69,7 @@ public class FirstQuery extends AbstractQuery implements Queryable {
 
         List<UserCartAndProductResponse> result = new ArrayList<>();
         for (UserCartAndProductResponse join : joins) {
+//            System.out.println(join.getGender() + " " + join.getAge());
             if (join.getGender().equals("女") && join.getAge() > 35) {
                 result.add(join);
             }
