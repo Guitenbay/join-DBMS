@@ -145,6 +145,7 @@ public class HashJoinImpl implements JoinOperation {
         for (T smallData = smallTable.readRowOnlyOne(); smallData != null; smallData = smallTable.readRowOnlyOne()) {
             //获取小值
             final Object smallDataValue = ClassUtils.getValueOfField(smallFieldMap.get(smallProperty), smallData);
+            if (smallDataValue == null) continue;
             //获取小值的hash值
             int smallDataHashCode = smallDataValue.toString().hashCode();
             //判断当前hash值是否存在，不存在则先插入一个头节点，便于join的优化操作
@@ -182,6 +183,7 @@ public class HashJoinImpl implements JoinOperation {
         for (T smallData : smallList) {
             //获取小值
             final Object smallDataValue = ClassUtils.getValueOfField(smallFieldMap.get(smallProperty), smallData);
+            if (smallDataValue == null) continue;
             //获取小值的hash值
             int smallDataHashCode = smallDataValue.toString().hashCode();
             //判断当前hash值是否存在，不存在则先插入一个头节点，便于join的优化操作
@@ -224,6 +226,7 @@ public class HashJoinImpl implements JoinOperation {
         for (U bigData = bigTable.readRowOnlyOne(); bigData != null; bigData = bigTable.readRowOnlyOne()){
             // 获取大值
             final Object bigDataValue = ClassUtils.getValueOfField(bigFieldMap.get(bigProperty), bigData);
+            if (bigDataValue == null) continue;
             //获取大值的hash值
             int bigDataHashCode = bigDataValue.toString().hashCode();
             //判断当前map里是否有对应的hashcode
@@ -235,6 +238,7 @@ public class HashJoinImpl implements JoinOperation {
                     HashNode dataNode = headNode.getNext();
                     // 获取小值
                     final Object smallDataValue = ClassUtils.getValueOfField(smallFieldMap.get(smallProperty), dataNode.getData());
+                    if (smallDataValue == null) continue;
                     //判断 join 条件是否一致
                     if (bigDataValue.toString().equals(smallDataValue.toString())) {
                         T entity = ClassUtils.createEntityFor(responseClazz);
@@ -282,6 +286,7 @@ public class HashJoinImpl implements JoinOperation {
         for (U bigData = bigTable.readRowOnlyOne(); bigData != null; bigData = bigTable.readRowOnlyOne()){
             // 获取大值
             final Object bigDataValue = ClassUtils.getValueOfField(bigFieldMap.get(bigProperty), bigData);
+            if (bigDataValue == null) continue;
             //获取大值的hash值
             int bigDataHashCode = bigDataValue.toString().hashCode();
             //判断当前map里是否有对应的hashcode
@@ -293,6 +298,7 @@ public class HashJoinImpl implements JoinOperation {
                     HashNode dataNode = headNode.getNext();
                     // 获取小值
                     final Object smallDataValue = ClassUtils.getValueOfField(smallFieldMap.get(smallProperty), dataNode.getData());
+                    if (smallDataValue == null) continue;
                     //判断 join 条件是否一致
                     if (bigDataValue.toString().equals(smallDataValue.toString())) {
                         T entity = ClassUtils.createEntityFor(responseClazz);
@@ -339,6 +345,7 @@ public class HashJoinImpl implements JoinOperation {
         for (U bigData: bigList){
             // 获取大值
             final Object bigDataValue = ClassUtils.getValueOfField(bigFieldMap.get(bigProperty), bigData);
+            if (bigDataValue == null) continue;
             //获取大值的hash值
             int bigDataHashCode = bigDataValue.toString().hashCode();
             //判断当前map里是否有对应的hashcode
@@ -350,6 +357,7 @@ public class HashJoinImpl implements JoinOperation {
                     HashNode dataNode = headNode.getNext();
                     // 获取小值
                     final Object smallDataValue = ClassUtils.getValueOfField(smallFieldMap.get(smallProperty), dataNode.getData());
+                    if (smallDataValue == null) continue;
                     //判断 join 条件是否一致
                     if (bigDataValue.toString().equals(smallDataValue.toString())) {
                         T entity = ClassUtils.createEntityFor(responseClazz);

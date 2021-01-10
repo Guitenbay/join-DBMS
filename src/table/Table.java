@@ -106,8 +106,8 @@ public class Table<T> {
     }
 
     public List<T> readRowLimit(int num) {
-        List<T> results = null;
         try {
+            List<T> results = null;
             String line;
             if (this.fieldValues.length == 0) {
                 // 读到末尾是 NULL
@@ -131,10 +131,11 @@ public class Table<T> {
                     results.add(entity);
                 }
             }
+            return results;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return results;
     }
 
     private T lineToEntity(String line) {

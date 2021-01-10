@@ -140,7 +140,7 @@ public class BlockNestedLoopImpl implements JoinOperation {
         FileUtils.endWrite(writer);
     }
 
-    private static final int BLOCK_SIZE = 10000;
+    private static final int BLOCK_SIZE = 1000000;
 
     @Override
     public <T, U, K> List<T> join(
@@ -221,6 +221,7 @@ public class BlockNestedLoopImpl implements JoinOperation {
 
         rightTable.startRead();
         while (null != (rightList = rightTable.readRowLimit(BLOCK_SIZE))) {
+            System.out.println("read right blocksize");
             for (U left: leftList) {
                 // 获取左值
                 final Object leftValue = ClassUtils.getValueOfField(leftFieldMap.get(leftProperty), left);

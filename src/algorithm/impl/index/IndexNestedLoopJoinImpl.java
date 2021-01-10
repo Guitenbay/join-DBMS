@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class IndexNestedLoopJoinImpl implements  JoinOperation{
+    private static int BTreeOrder = 1000;
     /**
      * 简单测试 JOIN 函数
      * @param rightList 左表
@@ -48,7 +49,7 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
         List<T> entities = new ArrayList<>();
 
         //创建索引表
-        BPlusTree<K, String> b = new BPlusTree<>(100);
+        BPlusTree<K, String> b = new BPlusTree<>(BTreeOrder);
         for (K right:rightList) {
             Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
             b.insert(right,rightValue.toString());
@@ -62,7 +63,7 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
             final  K[] value = b.find(leftValue.toString());
             K right=null;
             if (value!=null) {
-                for (int i=0;i<1000;i++){
+                for (int i=0;i<value.length;i++){
                     if (value[i]!=null) {
                         right = value[i];
                     }
@@ -90,7 +91,6 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
                                         Objects.requireNonNull(ClassUtils.getValueOfField(rightFieldMap.get(responseFieldName), right)));
                             }
                         }
-//                        System.out.println(entity);
                         entities.add(entity);
 
                     }
@@ -119,7 +119,7 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
         FileUtils.writeHead(writer, fieldValues);
 
         //创建索引表
-        BPlusTree<K, String> b = new BPlusTree<>(100);
+        BPlusTree<K, String> b = new BPlusTree<>(BTreeOrder);
         rightTable.startRead();
         for (K right = rightTable.readRowOnlyOne(); right != null; right = rightTable.readRowOnlyOne()) {
             Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
@@ -136,7 +136,7 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
             final  K[] value = b.find(leftValue.toString());
             K right;
             if (value!=null) {
-                for (int i=0;i<1000;i++){
+                for (int i=0;i<value.length;i++){
                     if (value[i]!=null) {
                         right = value[i];
                     }
@@ -186,10 +186,11 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
         List<T> entities = new ArrayList<>();
 
         //创建索引表
-        BPlusTree<K, String> b = new BPlusTree<>(100);
+        BPlusTree<K, String> b = new BPlusTree<>(BTreeOrder);
         rightTable.startRead();
         for (K right = rightTable.readRowOnlyOne(); right != null; right = rightTable.readRowOnlyOne()) {
             Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
+            assert rightValue != null;
             b.insert(right,rightValue.toString());
         }
         rightTable.endRead();
@@ -200,14 +201,14 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
             // 获取左值
             final  Object leftValue = ClassUtils.getValueOfField(leftFieldMap.get(leftProperty), left);
             // 索引右值
+            assert leftValue != null;
             final  K[] value = b.find(leftValue.toString());
             K right=null;
             if (value!=null) {
-                for (int i=0;i<1000;i++){
-                    if (value[i]!=null) {
-                        right = value[i];
-                    }
-                    else
+                for (K k : value) {
+                    if (k != null) {
+                        right = k;
+                    } else
                         break;
                     final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
                     assert rightValue != null;
@@ -253,11 +254,12 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
         List<T> entities = new ArrayList<>();
 
         //创建索引表
-        BPlusTree<K, String> b = new BPlusTree<>(100);
+        BPlusTree<K, String> b = new BPlusTree<>(BTreeOrder);
 
         rightTable.startRead();
         for (K right = rightTable.readRowOnlyOne(); right != null; right = rightTable.readRowOnlyOne()) {
             Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
+            assert rightValue != null;
             b.insert(right,rightValue.toString());
         }
         rightTable.endRead();
@@ -267,17 +269,17 @@ public class IndexNestedLoopJoinImpl implements  JoinOperation{
             // 获取左值
             final Object leftValue = ClassUtils.getValueOfField(leftFieldMap.get(leftProperty), left);
             // 索引右值
+            assert leftValue != null;
             final K[] value = b.find(leftValue.toString());
-            K right=null;
+            K right;
             if (value!=null) {
-                for (int i=0;i<1000;i++){
-                    if (value[i]!=null) {
-                        right = value[i];
-                    }
-                    else
+                for (K k : value) {
+                    if (k != null) {
+                        right = k;
+                    } else
                         break;
                     final Object rightValue = ClassUtils.getValueOfField(rightFieldMap.get(rightProperty), right);
-                    assert rightValue!=null;
+                    assert rightValue != null;
                     // 判断 join 条件是否一致
                     if (leftValue.toString().equals(rightValue.toString())) {
                         T entity = ClassUtils.createEntityFor(responseClazz);

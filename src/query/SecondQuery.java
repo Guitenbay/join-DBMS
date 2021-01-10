@@ -12,7 +12,7 @@ public class SecondQuery extends AbstractQuery implements Queryable {
     }
 
     /**
-     * 查询拥有两个手机号的男性用户ID、年龄及手机号
+     * 手机号13开头的上海用户的名字
      * @return
      */
     @Override
@@ -20,7 +20,7 @@ public class SecondQuery extends AbstractQuery implements Queryable {
         Table<User> userTable = new Table<>("user", User.class);
         Table<Phone> phoneTable = new Table<>("phone", Phone.class);
 
-        List<String> moreThen2PhoneUserIds = new ArrayList<>();
+//        List<String> moreThen2PhoneUserIds = new ArrayList<>();
         List<UserPhoneResponse> userPhoneResponses;
         if (method.contains("memory")){
             userTable.startRead();
@@ -32,36 +32,36 @@ public class SecondQuery extends AbstractQuery implements Queryable {
             userTable.endRead();
             phoneTable.endRead();
 
-            Map<String, List<Phone>> groupPhones = new HashMap<>();
-            for (Phone phone : phones) {
-                if (!groupPhones.containsKey(phone.getUserId())) {
-                    groupPhones.put(phone.getUserId(), new ArrayList<>());
-                }
-                groupPhones.get(phone.getUserId()).add(phone);
-            }
+//            Map<String, List<Phone>> groupPhones = new HashMap<>();
+//            for (Phone phone : phones) {
+//                if (!groupPhones.containsKey(phone.getUserId())) {
+//                    groupPhones.put(phone.getUserId(), new ArrayList<>());
+//                }
+//                groupPhones.get(phone.getUserId()).add(phone);
+//            }
 
-            groupPhones.forEach((key, value) -> {
-                if (value.size() > 1) moreThen2PhoneUserIds.add(key);
-            });
+//            groupPhones.forEach((key, value) -> {
+//                if (value.size() > 1) moreThen2PhoneUserIds.add(key);
+//            });
 
             userPhoneResponses = this.joinOperation.joinForMemory(
                     users, phones, "userId", "userId",
                     UserPhoneResponse.class, User.class, Phone.class
             );
         } else {
-            Map<String, List<Phone>> groupPhones = new HashMap<>();
-            phoneTable.startRead();
-            for (Phone phone = phoneTable.readRowOnlyOne(); phone != null; phone = phoneTable.readRowOnlyOne()) {
-                if (!groupPhones.containsKey(phone.getUserId())) {
-                    groupPhones.put(phone.getUserId(), new ArrayList<>());
-                }
-                groupPhones.get(phone.getUserId()).add(phone);
-            }
-            phoneTable.endRead();
+//            Map<String, List<Phone>> groupPhones = new HashMap<>();
+//            phoneTable.startRead();
+//            for (Phone phone = phoneTable.readRowOnlyOne(); phone != null; phone = phoneTable.readRowOnlyOne()) {
+//                if (!groupPhones.containsKey(phone.getUserId())) {
+//                    groupPhones.put(phone.getUserId(), new ArrayList<>());
+//                }
+//                groupPhones.get(phone.getUserId()).add(phone);
+//            }
+//            phoneTable.endRead();
 
-            groupPhones.forEach((key, value) -> {
-                if (value.size() > 1) moreThen2PhoneUserIds.add(key);
-            });
+//            groupPhones.forEach((key, value) -> {
+//                if (value.size() > 1) moreThen2PhoneUserIds.add(key);
+//            });
 
             userPhoneResponses = this.joinOperation.join(
                     userTable, phoneTable, "userId", "userId",
@@ -70,7 +70,8 @@ public class SecondQuery extends AbstractQuery implements Queryable {
         }
         List<UserPhoneResponse> result = new ArrayList<>();
         for (UserPhoneResponse userPhoneResponse : userPhoneResponses) {
-            if (moreThen2PhoneUserIds.contains(userPhoneResponse.getUserId())) {
+//            if (moreThen2PhoneUserIds.contains(userPhoneResponse.getUserId())) {
+            if (userPhoneResponse.getPhoneNumber().startsWith("13") && userPhoneResponse.getProvince().equals("沪")) {
                 result.add(userPhoneResponse);
             }
         }

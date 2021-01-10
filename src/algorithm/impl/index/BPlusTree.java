@@ -24,7 +24,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
     }
 
     //有参构造方法，可以设定B+树的阶
-    public BPlusTree(Integer bTreeOrder){
+    BPlusTree(Integer bTreeOrder){
         this.bTreeOrder = bTreeOrder;
         //this.minNUmber = (int) Math.ceil(1.0 * bTreeOrder / 2.0);
         //因为插入节点过程中可能出现超过上限的情况,所以这里要加1
@@ -35,11 +35,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
 
     //查询
     public T[] find(V key){
-        T[] t = this.root.find(key);
-        if(t == null){
-//            System.out.println("不存在");
-        }
-        return t;
+        return this.root.find(key);
     }
 
     //插入
@@ -71,7 +67,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
         //父节点
         protected Node<T, V> parent;
         //子节点
-        protected Node<T, V>[] childs;
+        Node<T, V>[] childs;
         //键（子节点）数量
 //        protected   Node<T,V> left;
 //        protected   Node<T,V> right;
@@ -80,7 +76,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
         protected Object keys[];
 
         //构造方法
-        public Node(){
+        Node(){
             this.keys = new Object[maxNumber];
             this.childs = new Node[maxNumber];
             this.number = 0;
@@ -105,7 +101,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
 
     class BPlusNode <T, V extends Comparable<V>> extends Node<T, V>{
 
-        public BPlusNode() {
+        BPlusNode() {
             super();
         }
 
@@ -188,15 +184,15 @@ public class BPlusTree<T, V extends Comparable<V>>{
             }
             //原有节点不为空,则应该先寻找原有节点的位置,然后将新的节点插入到原有节点中
             int i = 0;
-            while(key.compareTo((V)this.keys[i]) != 0){
+            while(key.compareTo((V) this.keys[i]) != 0){
                 i++;
             }
             //左边节点的最大值可以直接插入,右边的要挪一挪再进行插入
             this.keys[i] = node1.keys[node1.number - 1];
             this.childs[i] = node1;
 
-            Object tempKeys[] = new Object[maxNumber];
-            Object tempChilds[] = new Node[maxNumber];
+            Object[] tempKeys = new Object[maxNumber];
+            Object[] tempChilds = new Node[maxNumber];
 
 
             System.arraycopy(this.keys, 0, tempKeys, 0, i + 1);
@@ -265,11 +261,11 @@ public class BPlusTree<T, V extends Comparable<V>>{
      */
     class LeafNode <T, V extends Comparable<V>> extends Node<T, V> {
 
-        protected Object values[];
-        protected LeafNode left;
-        protected LeafNode right;
+        protected Object[] values;
+        LeafNode<T, V> left;
+        protected LeafNode<T, V> right;
 
-        public LeafNode(){
+        LeafNode(){
             super();
             this.values = new Object[maxNumber];
             this.left = null;
@@ -301,11 +297,10 @@ public class BPlusTree<T, V extends Comparable<V>>{
                 if(key.compareTo(middleKey) == 0) {
                     T[] value= (T[]) new Object[1000];
                     value[0]=(T)this.values[middle];
-                    V k=middleKey;
-                    Integer i=0;
+                    int i=0;
                     Integer n=middle;
-                    LeafNode templ=this;
-                    LeafNode tempr=this;
+                    LeafNode<T, V> templ=this;
+                    LeafNode<T, V> tempr=this;
 //                    System.out.println("*");
 //                    if (this.left==null)
 //                        System.out.println("this leafnode's left is null");
@@ -327,7 +322,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
                             n=n-1;
 //                            System.out.println(n);
 //                            System.out.println(templ.keys[n]);
-                            if (templ.keys[n].equals(k)){
+                            if (templ.keys[n].equals(middleKey)){
                                 i=i+1;
                                 value[i]=(T)templ.values[n];
                             }else
@@ -350,7 +345,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
                             n=n+1;
 //                            System.out.println(n);
 //                            System.out.println(tempr.keys[n]);
-                            if (tempr.keys[n].equals(k)){
+                            if (tempr.keys[n].equals(middleKey)){
                                 i=i+1;
                                 value[i]=(T)tempr.values[n];
                             }else
@@ -360,12 +355,12 @@ public class BPlusTree<T, V extends Comparable<V>>{
                     return (T[]) value;
                 }
                 else if(key.compareTo(middleKey) < 0) {
-                    if(right==middle)
+                    if(right.equals(middle))
                         return  null;
                     right = middle;
                 }
                 else {
-                    if(left==middle)
+                    if(left.equals(middle))
                         return null;
                     left = middle;
                 }
@@ -397,8 +392,8 @@ public class BPlusTree<T, V extends Comparable<V>>{
             }
 
             //复制数组,完成添加
-            Object tempKeys[] = new Object[maxNumber];
-            Object tempValues[] = new Object[maxNumber];
+            Object[] tempKeys = new Object[maxNumber];
+            Object[] tempValues = new Object[maxNumber];
             System.arraycopy(this.keys, 0, tempKeys, 0, i);
             System.arraycopy(this.values, 0, tempValues, 0, i);
             System.arraycopy(this.keys, i, tempKeys, i + 1, this.number - i);
@@ -420,7 +415,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
                 System.arraycopy(tempValues, 0, this.values, 0, this.number);
 
                 //有可能虽然没有节点分裂，但是实际上插入的值大于了原来的最大值，所以所有父节点的边界值都要进行更新
-                Node node = this;
+                Node<T, V> node = this;
                 while (node.parent != null){
                     V tempkey = (V)node.keys[node.number - 1];
                     if(tempkey.compareTo((V)node.parent.keys[node.parent.number - 1]) > 0){
@@ -465,7 +460,7 @@ public class BPlusTree<T, V extends Comparable<V>>{
             System.arraycopy(tempKeys, 0, this.keys, 0, middle);
             System.arraycopy(tempValues, 0, this.values, 0, middle);
 
-            LeafNode tempRight=this.right;
+            LeafNode<T, V> tempRight=this.right;
             tempNode.right=tempRight;
             if (tempRight!=null) {
                 tempRight.left = tempNode;

@@ -37,4 +37,13 @@ public class ProductInShoppingCart {
     public void setNumber(int number) {
         this.number = number;
     }
+
+    @Override
+    public String toString() {
+        return "ProductInShoppingCart{" +
+                "cartId='" + cartId + '\'' +
+                ", productId='" + productId + '\'' +
+                ", number=" + number +
+                '}';
+    }
 }

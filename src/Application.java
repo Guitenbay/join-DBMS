@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 public class Application {
 
     private static final JoinOperation bnlJoin = new BlockNestedLoopImpl();
-    private static final JoinOperation testJoin = new TestJoinOperationImpl();
+//    private static final JoinOperation testJoin = new TestJoinOperationImpl();
     private static final JoinOperation hashJoin = new HashJoinImpl();
     private static final JoinOperation indexNestedLoopJoin = new IndexNestedLoopJoinImpl();
 
@@ -51,14 +51,16 @@ public class Application {
         Queryable queryableQ1Hash =
                 (Queryable) new RunTimeHandler(prefix + " (H) " + type, clazz.getConstructor(JoinOperation.class).newInstance(hashJoin)).createProxy();
         queryableQ1Hash.query(type);
+        System.gc();
 
         Queryable queryableQ1INL =
                 (Queryable) new RunTimeHandler(prefix + " (I) " + type, clazz.getConstructor(JoinOperation.class).newInstance(indexNestedLoopJoin)).createProxy();
         queryableQ1INL.query(type);
+        System.gc();
 
-        Queryable queryableQ1Bnl =
-                (Queryable) new RunTimeHandler(prefix + " (B) " + type, clazz.getConstructor(JoinOperation.class).newInstance(bnlJoin)).createProxy();
-        queryableQ1Bnl.query(type);
+//        Queryable queryableQ1Bnl =
+//                (Queryable) new RunTimeHandler(prefix + " (B) " + type, clazz.getConstructor(JoinOperation.class).newInstance(bnlJoin)).createProxy();
+//        queryableQ1Bnl.query("memory");
     }
 
 }
